@@ -1,6 +1,7 @@
 package com.is216.bookweb.services;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -51,6 +52,14 @@ public class GenreService {
         genreRepository.save(genre);
 
         return "Update success!";
+    }
+
+    public List<Genre> findGenreById(String id) {
+        List<Genre> genres = new ArrayList<>();
+        var genre = genreRepository.findById(id).get();
+        genres.add(genre);
+
+        return genres;
     }
 
     

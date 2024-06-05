@@ -30,6 +30,11 @@ public class GenreController {
         return genreService.getAllGenres();
     }
 
+    @GetMapping("/{id}")
+    public List<Genre> findGenreById(@PathVariable String id) {
+        return genreService.findGenreById(id);
+    }
+
 
     @PostMapping()
     public String createGenre(@RequestBody Genre genre) {
