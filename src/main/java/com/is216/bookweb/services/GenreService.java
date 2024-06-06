@@ -4,9 +4,7 @@ package com.is216.bookweb.services;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -49,6 +47,7 @@ public class GenreService {
         Genre genre = genreRepository.findById(id).get();
         genre.setName(newGenre.getName());
         genre.setDescription(newGenre.getDescription());
+        genre.setImages(newGenre.getImages());
         genreRepository.save(genre);
 
         return "Update success!";

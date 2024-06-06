@@ -1,5 +1,7 @@
 package com.is216.bookweb.models;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,6 +11,7 @@ public class Genre {
     private String id;
     private String name;
     private String description;
+    private List<String> images;
     public Genre() { 
         
     }
@@ -26,6 +29,13 @@ public class Genre {
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 
 
