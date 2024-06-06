@@ -1,6 +1,7 @@
 package com.is216.bookweb.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.is216.bookweb.models.Book;
 import com.is216.bookweb.payload.ResponseData;
@@ -50,16 +51,17 @@ public class BookController {
     
     @PostMapping()
     public ResponseEntity<?> createBook(
-            @RequestParam  String title,
-            @RequestParam  String author,
-            @RequestParam  String genre,
-            @RequestParam  String descrition,
-            @RequestParam  Integer stock,
-            @RequestParam  BigDecimal price,
-            @RequestParam  BigDecimal salePrice) {
+            @RequestParam(value = "title", required = true)  String title,
+            @RequestParam("author")  String author,
+            @RequestParam("genre")  String genre,
+            @RequestParam("descrition")  String descrition,
+            @RequestParam("stock")  Integer stock,
+            @RequestParam("price")  BigDecimal price,
+            @RequestParam("salePrice")  BigDecimal salePrice,
+            @RequestParam(value = "images", required = false) List<MultipartFile> images ) {
         
         ResponseData responseData = new ResponseData();
-        boolean success = bookService.createBook(title, author, genre, descrition, stock, price, salePrice);
+        boolean success = bookService.createBook(title, author, genre, descrition, stock, price, salePrice,images);
         responseData.setData(success);
         
         return new ResponseEntity<>(responseData,HttpStatus.OK );
@@ -74,9 +76,10 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateBook(@PathVariable("id") String id, Book bookDetail){
+    public ResponseEntity<?> updateBook(@PathVariable("id") String id,@RequestBody Book bookDetail){
         ResponseData responseData = new ResponseData();
         responseData.setData(bookService.updateBook(id, bookDetail));
+        
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 }
