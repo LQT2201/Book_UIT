@@ -7,5 +7,5 @@ import com.is216.bookweb.models.Book;
 
 @Repository
 public interface BookRepository extends MongoRepository<Book, String>{
-    
+  
 }
