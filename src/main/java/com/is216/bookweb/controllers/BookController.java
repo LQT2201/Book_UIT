@@ -53,7 +53,7 @@ public class BookController {
     public ResponseEntity<?> createBook(
             @RequestParam(value = "title", required = true)  String title,
             @RequestParam("author")  String author,
-            @RequestParam("genre" )  String genre,
+            @RequestParam("genre")  String genre,
             @RequestParam("descrition")  String descrition,
             @RequestParam("stock")  Integer stock,
             @RequestParam("price")  BigDecimal price,

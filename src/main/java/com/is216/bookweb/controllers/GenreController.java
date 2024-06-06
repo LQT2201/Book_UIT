@@ -3,7 +3,7 @@ package com.is216.bookweb.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
+import com.is216.bookweb.config.CustomUserDetailsService;
 import com.is216.bookweb.models.Genre;
-
+import com.is216.bookweb.repositories.UserRepository;
 import com.is216.bookweb.services.GenreService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -25,10 +29,21 @@ public class GenreController {
     @Autowired
     GenreService genreService;
 
+    @Autowired
+    UserRepository customUserDetailsService;
+
     @GetMapping()
     public List<Genre> findAllGenre() {
+        
         return genreService.getAllGenres();
     }
+
+    @GetMapping("/test")
+    public StringArrayDeserializer getMethodName() {
+        
+        return null;
+    }
+    
 
 
     @PostMapping()
