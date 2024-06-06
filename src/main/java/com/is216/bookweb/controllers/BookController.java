@@ -74,9 +74,10 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateBook(@PathVariable("id") String id, Book bookDetail){
+    public ResponseEntity<?> updateBook(@PathVariable("id") String id,@RequestBody Book bookDetail){
         ResponseData responseData = new ResponseData();
         responseData.setData(bookService.updateBook(id, bookDetail));
+        
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 }
