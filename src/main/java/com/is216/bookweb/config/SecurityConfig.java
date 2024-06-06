@@ -53,8 +53,6 @@ public class SecurityConfig {
     }
 
 
-
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
@@ -63,9 +61,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/login/**")
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET,  "/api/genre/**")
+                        .requestMatchers(HttpMethod.GET,  "/api/**")
                         .permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                         .httpBasic(Customizer.withDefaults());
                         ;
   

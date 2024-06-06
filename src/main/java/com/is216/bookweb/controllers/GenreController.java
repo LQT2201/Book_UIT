@@ -3,10 +3,6 @@ package com.is216.bookweb.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-<<<<<<< HEAD
-=======
-import org.springframework.security.core.userdetails.UserDetailsService;
->>>>>>> fd2c05296a8500154e1bd0863e32ede85686aa9a
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,10 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
 import com.is216.bookweb.config.CustomUserDetailsService;
 import com.is216.bookweb.models.Genre;
-<<<<<<< HEAD
-=======
-import com.is216.bookweb.repositories.UserRepository;
->>>>>>> fd2c05296a8500154e1bd0863e32ede85686aa9a
 import com.is216.bookweb.services.GenreService;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -35,28 +27,16 @@ public class GenreController {
     @Autowired
     GenreService genreService;
 
-    @Autowired
-    UserRepository customUserDetailsService;
-
     @GetMapping()
     public List<Genre> findAllGenre() {
         
         return genreService.getAllGenres();
     }
 
-<<<<<<< HEAD
     @GetMapping("/{id}")
     public List<Genre> findGenreById(@PathVariable String id) {
         return genreService.findGenreById(id);
     }
-=======
-    @GetMapping("/test")
-    public StringArrayDeserializer getMethodName() {
-        
-        return null;
-    }
-    
->>>>>>> fd2c05296a8500154e1bd0863e32ede85686aa9a
 
 
     @PostMapping()
