@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.deser.std.StringArrayDeserializer;
-import com.is216.bookweb.config.CustomUserDetailsService;
+
 import com.is216.bookweb.models.Genre;
 import com.is216.bookweb.services.GenreService;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
