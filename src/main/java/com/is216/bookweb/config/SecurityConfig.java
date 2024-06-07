@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -60,8 +61,9 @@ public class SecurityConfig {
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer
                         .configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/api/login/**")
+                        .requestMatchers("/login/**")
                         .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/book/**", "/api/genre/**", "/api/author/**").permitAll()
                         .requestMatchers("/api/**").hasAnyRole("ADMIN","USER")
                         .anyRequest().authenticated());
         http.addFilterBefore(customJwtFilter, UsernamePasswordAuthenticationFilter.class);

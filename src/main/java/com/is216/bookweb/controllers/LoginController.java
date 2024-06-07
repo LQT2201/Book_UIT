@@ -14,12 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-
-
-
 @RestController
-@RequestMapping("api/login")
+@RequestMapping("/login")
 public class LoginController {
 
     @Autowired
@@ -28,7 +24,7 @@ public class LoginController {
     @Autowired
     JwtHelper jwtHelper;
 
-    @PostMapping("/singin")
+    @PostMapping("/signin")
     public ResponseEntity<?> singin(@RequestParam String username, @RequestParam String password) {
         ResponseData responseData = new ResponseData();
 

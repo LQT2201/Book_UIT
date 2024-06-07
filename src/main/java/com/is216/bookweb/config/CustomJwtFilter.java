@@ -35,6 +35,11 @@ public class CustomJwtFilter extends OncePerRequestFilter{
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String token = getJwtFromRequest(request);
+
+        if(token == null) {
+            filterChain.doFilter(request, response);
+            return ;
+        }
         
         String username = jwtHelper.extractUsername(token);
         var user = customUserDetailsService.loadUserByUsername(username);
