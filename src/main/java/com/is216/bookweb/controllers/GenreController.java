@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.is216.bookweb.models.Genre;
-import com.is216.bookweb.repositories.UserRepository;
 import com.is216.bookweb.services.GenreService;
 
 
@@ -24,9 +23,6 @@ import com.is216.bookweb.services.GenreService;
 public class GenreController {
     @Autowired
     GenreService genreService;
-
-    @Autowired
-    UserRepository customUserDetailsService;
 
     @GetMapping()
     public List<Genre> findAllGenre() {
