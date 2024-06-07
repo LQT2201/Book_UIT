@@ -65,7 +65,6 @@ public class SecurityConfig {
                         .permitAll()
                         .anyRequest().permitAll())
                         .httpBasic(Customizer.withDefaults());
-                        ;
   
         return http.build();
     }

@@ -1,5 +1,7 @@
 package com.is216.bookweb.models;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +13,7 @@ public class User {
     private String username;
     private String password;
     private String role;
+    List<BoughtInformation> cart;
 
     public String getId() {
         return id;
@@ -37,6 +40,11 @@ public class User {
         this.role = role;
     }
 
-
+    public List<BoughtInformation> getCart() {
+        return cart;
+    }
+    public void setCart(List<BoughtInformation> cart) {
+        this.cart = cart;
+    }
     
 }
