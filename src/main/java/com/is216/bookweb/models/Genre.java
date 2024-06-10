@@ -11,7 +11,7 @@ public class Genre {
     private String id;
     private String name;
     private String description;
-    private List<String> images;
+    private String images;
     public Genre() { 
         
     }
@@ -31,10 +31,10 @@ public class Genre {
         this.description = description;
     }
 
-    public List<String> getImages() {
+    public String getImages() {
         return images;
     }
-    public void setImages(List<String> images) {
+    public void setImages(String images) {
         this.images = images;
     }
 

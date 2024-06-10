@@ -1,9 +1,9 @@
 package com.is216.bookweb.config;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,9 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.is216.bookweb.models.User;
 import com.is216.bookweb.repositories.UserRepository;
-
-
-import java.util.List;
 
 
 @Service
