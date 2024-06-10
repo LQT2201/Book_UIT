@@ -3,6 +3,7 @@ package com.is216.bookweb.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +20,8 @@ import com.is216.bookweb.repositories.BookRepository;
 import com.is216.bookweb.repositories.UserRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -30,6 +33,16 @@ public class UserController {
 
     @Autowired
     BookRepository bookRepository;
+
+    @GetMapping()
+    public ResponseEntity<?> getAllUser() {
+        
+        ResponseData responseData = new ResponseData();
+        responseData.setData(userRepository.findAll());
+
+        return new ResponseEntity<>(responseData, HttpStatus.OK);
+    }
+    
 
     @GetMapping("/cart")
     public List<BoughtInformation> findCart() {

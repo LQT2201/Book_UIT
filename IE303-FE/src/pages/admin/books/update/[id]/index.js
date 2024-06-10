@@ -74,6 +74,8 @@ const UpdateBook = () => {
         
         setGenres(genresData)
         setBook(bookData)
+        setImages(bookData.images || [])
+        console.log(bookData)
       } catch (error) {
         console.error('Failed to fetch data:', error)
       }

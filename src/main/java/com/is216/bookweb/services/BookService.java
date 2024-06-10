@@ -20,7 +20,7 @@ public class BookService {
     CloundinaryService cloundinaryService;
 
     public List<Book> getAllBooks() {
-        System.out.println("connect");
+        System.out.println("Get all book");
         return bookRepository.findAll();
     }
 
@@ -84,15 +84,39 @@ public class BookService {
         return isSuccess;
     }
 
-    public boolean updateBook(String id, Book bookDetail) {
+    public boolean updateBook(
+            String id, 
+            String title, 
+            String author, 
+            String genre, 
+            String description, 
+            Integer stock, 
+            BigDecimal price, 
+            BigDecimal salePrice,
+            String publisher,
+            List<MultipartFile> images) {
         boolean isSuccess = false;    
+        List<String> imgUrls = new ArrayList<>();
         
         try {
            Book book =  bookRepository.findById(id).get();
-           book.setTitle(bookDetail.getTitle());
+           book.setTitle(title);
+           book.setAuthor(author);
+           book.setDescription(description);
+           book.setGenre(genre);
+           book.setPrice(price);
+           book.setSalePrice(salePrice);
+           book.setStock(stock);
+           book.setPublisher(publisher);
 
+           if (images != null) {
+            for (MultipartFile img : images) {
+                imgUrls.add(cloundinaryService.uploadFile(img));
+            }
+           }
+           
+           book.setImages(imgUrls);
            bookRepository.save(book);
-
            isSuccess = true;
         } catch (Exception e) {
             System.out.println(e.getMessage());

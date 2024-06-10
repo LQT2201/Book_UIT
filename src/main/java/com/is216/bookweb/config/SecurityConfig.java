@@ -74,12 +74,11 @@ public class SecurityConfig {
                         .hasAnyRole("USER", "ADMIN")
                     .requestMatchers(HttpMethod.POST, "/api/order/checkout").hasAnyRole("USER", "ADMIN")
                     .requestMatchers("/api/user/cart" ).hasAnyRole("USER", "ADMIN")
+                    // Admin
                     .requestMatchers(HttpMethod.POST,"/api/book/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.PATCH, "/api/book/**").hasAnyRole("ADMIN")
-                    .anyRequest().authenticated()
-                        
-                    
-                        );
+                    .requestMatchers(HttpMethod.PATCH, "/api/book/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/book/**").hasRole("ADMIN")
+                    .anyRequest().authenticated());
                         // .requestMatchers("/api/**").hasAnyRole("ADMIN","USER")
                         // .anyRequest().authenticated());
         http.addFilterBefore(customJwtFilter, UsernamePasswordAuthenticationFilter.class);

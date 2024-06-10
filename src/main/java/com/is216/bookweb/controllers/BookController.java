@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.is216.bookweb.models.Book;
+import com.is216.bookweb.models.BookUpdateRequest;
 import com.is216.bookweb.payload.ResponseData;
 import com.is216.bookweb.services.BookService;
 
@@ -77,9 +79,18 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateBook(@PathVariable("id") String id,@RequestBody Book bookDetail){
+    public ResponseEntity<?> updateBook(@PathVariable("id") String id,  
+            @RequestParam(value = "title", required = true)  String title,
+            @RequestParam("author")  String author,
+            @RequestParam("genre")  String genre,
+            @RequestParam("description")  String description,
+            @RequestParam("stock")  Integer stock,
+            @RequestParam("price")  BigDecimal price,
+            @RequestParam("salePrice")  BigDecimal salePrice,
+            @RequestParam("publisher")  String publisher,
+            @RequestParam(value = "images", required = false) List<MultipartFile> images){
         ResponseData responseData = new ResponseData();
-        responseData.setData(bookService.updateBook(id, bookDetail));
+        responseData.setData(bookService.updateBook(id, title, author, genre, description, stock, price, salePrice, publisher,images));
         
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
