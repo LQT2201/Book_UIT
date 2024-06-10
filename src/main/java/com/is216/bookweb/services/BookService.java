@@ -36,6 +36,7 @@ public class BookService {
             Integer stock, 
             BigDecimal price, 
             BigDecimal salePrice,
+            String publisher,
             List<MultipartFile> images) {
 
         boolean isSuccess = false;    
@@ -58,7 +59,7 @@ public class BookService {
             book.setStock(stock);
             book.setPrice(price);
             book.setSalePrice(salePrice);
-
+            book.setPublisher(publisher);
             book.setImages(imgUrls);
 
             bookRepository.save(book);

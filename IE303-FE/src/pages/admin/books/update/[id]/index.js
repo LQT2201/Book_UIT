@@ -69,9 +69,9 @@ const UpdateBook = () => {
         const [bookData, genresData, authorsData] = await Promise.all([
           fetch(`${BASE_URL}/book/${router.query.id}`).then(resp => resp.json()),
           fetch(`${BASE_URL}/genre`).then(resp => resp.json()),
-          fetch(`${BASE_URL}/author`).then(resp => resp.json())
+          
         ])
-        setAuthors(authorsData)
+        
         setGenres(genresData)
         setBook(bookData)
       } catch (error) {
@@ -133,11 +133,7 @@ const UpdateBook = () => {
           <Grid item xs={12} sm={6} sx={{ marginTop: 4.8 }}>
             <FormControl fullWidth>
               <FormLabel>Tác giả</FormLabel>
-              <StyledSelect id="authors" name="author" defaultValue={book.author}>
-                {authors.map(author => (
-                  <MenuItem key={author.id} value={author.name}>{author.name}</MenuItem>
-                ))}
-              </StyledSelect>
+              <StyledTextField name='author'  defaultValue={book.author} />
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={3}>
@@ -160,11 +156,7 @@ const UpdateBook = () => {
 
             <StyledTextField type='number' name='stock'  defaultValue={book.stock} />
           </Grid>
-          <Grid item xs={12} sm={3}>
-            <FormLabel>Số trang sách</FormLabel>
-
-            <StyledTextField type='number' name='pages'  defaultValue={book.pages} />
-          </Grid>
+         
           <Grid item xs={12} sm={3}>
           <FormLabel>Giá sách</FormLabel>
 
@@ -173,10 +165,8 @@ const UpdateBook = () => {
           <Grid item xs={12} sm={6} sx={{ marginTop: 4.8 }}>
             <StyledTextField name='publisher' label='Nhà xuất bản' placeholder='Nhà xuất bản' defaultValue={book.publisher} />
           </Grid>
-          <Grid item xs={12} sm={6} sx={{ marginTop: 4.8 }}>
-            <FormLabel>Ngày xuất bản</FormLabel>
-            <StyledInput type='date' name='publishDate' defaultValue={new Date(book.publishDate).toISOString().slice(0, 10)} />
-          </Grid>
+                
+         
           <Grid item xs={12} sm={6} sx={{ marginTop: 4.8 }}>
             {images.map((img, index) => (
               <ImgStyled key={index} src={img} />

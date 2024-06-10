@@ -23,7 +23,7 @@ const Category = ({ genres }) => {
             <Card>
               <CardContent sx={{ textAlign: 'center', padding: '10px 0 0 0 ' }}>
                 <Box>
-                  <img height={'100px'} width={'100px'} sx={{ cursor: 'pointer' }} src={genre.images[0]} />
+                  <img height={'100px'} width={'100px'} sx={{ cursor: 'pointer' }} src={genre ? genre.images : 'default-image.jpg'}  />
                 </Box>
                 <Typography component='span' className='category_title'>
                   {genre.name}

@@ -1,44 +1,30 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect} from 'react';
 import { useRouter } from 'next/router';
 import formater from 'src/utils/formatCurrency';
-import DefaultLayout from 'src/layouts/DefaultLayout'
+import DefaultLayout from 'src/layouts/DefaultLayout';
 import {
   Input,
   Box,
   Typography,
   Container,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   Grid,
-  CardMedia,
-  Button
-} from '@mui/material'
+  Button,
+  Breadcrumbs,
+  Select,
+  MenuItem
+} from '@mui/material';
 import Swal from 'sweetalert2';
 
 const getToken = () => {
-  return localStorage.getItem('token')
-}
-const BASE_URL = 'http://127.0.0.1:8080/api'
+  return localStorage.getItem('token');
+};
+const BASE_URL = 'http://127.0.0.1:8080/api';
+
 export default function Checkout() {
-  const router = useRouter()
-  const handleClick = async() => {
-    const resp = await fetch(`${BASE_URL}/order/checkout`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: address
-    })
-    if(resp.status == 200) {
-      Swal.fire("Đặt hàng thành công", "", "success");
-      router.push('/')
-    }
-  }
-  const [token, setToken] = useState('')
-  const [cart, setCart] = useState([])
-  const [address, setAddress] = useState('')
+  const router = useRouter();
+  const [token, setToken] = useState('');
+  const [cart, setCart] = useState([]);
+  const [address, setAddress] = useState('');
   
   const updateCart = async (newCart) => {
     await fetch(`${BASE_URL}/user/cart`, {
@@ -48,12 +34,13 @@ export default function Checkout() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(newCart)
-    })
-  }
+    });
+  };
+
   useEffect(() => {
-    if(typeof window !== 'undefined'){
-      const tok = getToken()
-      setToken(tok)
+    if (typeof window !== 'undefined') {
+      const tok = getToken();
+      setToken(tok);
       const fetchUser = async () => {
         try {
           const cart = await fetch(`${BASE_URL}/user/cart`, {
@@ -61,17 +48,42 @@ export default function Checkout() {
             headers: {
               Authorization: `Bearer ${tok}`
             }
-          }).then(res => res.json())
-          setCart(cart)
+          }).then(res => res.json());
+          setCart(cart);
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
-      }
-      fetchUser()
+      };
+      fetchUser();
     }
-  }, [])
+  }, []);
+
+  const handleClick = async() => {
+    if (!address) {
+      Swal.fire("Vui lòng nhập địa chỉ giao hàng", "", "warning");
+      return;
+    }
+
+    const resp = await fetch(`${BASE_URL}/order/checkout`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ address })
+    });
+
+    if (resp.status == 200) {
+      Swal.fire("Đặt hàng thành công", "", "success");
+      router.push('/');
+    } else {
+      Swal.fire("Đặt hàng thất bại", "", "error");
+    }
+  };
+
   return (
-    <Container maxWidth='lg'>
+    <>
+    <Typography component="h3"> Trang thanh toán</Typography>
+    <Container maxWidth='lg' sx={{marginTop:5}}>
       <Grid
         container
         spacing={2}
@@ -98,10 +110,40 @@ export default function Checkout() {
               placeholder='Địa chỉ' 
               fullWidth 
               onChange={(e) => setAddress(e.target.value)}
+              required
             >
             </Input>
           </Grid>
         </Box>
+      </Grid>
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          backgroundColor: '#ffffff',
+          display: 'flex',
+          flexDirection: 'column',
+          paddingTop: 10,
+          paddingBottom: 10,
+          paddingLeft: 20,
+          paddingRight: 20
+        }}
+      >
+        <Box>
+          <Typography sx={{ fontSize: 18, fontWeight: 600 }}>Phương thức thanh toán</Typography>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+
+            label="Age"
+          >
+            <MenuItem value={10}>Ten</MenuItem>
+            <MenuItem value={20}>Twenty</MenuItem>
+            <MenuItem value={30}>Thirty</MenuItem>
+            
+          </Select>
+        </Box>
+       
       </Grid>
       <Grid
         container
@@ -146,27 +188,27 @@ export default function Checkout() {
                   <Box flexBasis="28%" display="flex" alignItems="center" justifyContent="space-between">
                     <input id={`item-${item.itemId}`} type='number' defaultValue={item.quantity} name='quantity'
                       onChange={async (e) => {
-                        const id = e.target.id.split('-')[1]
+                        const id = e.target.id.split('-')[1];
                         const newCart = cart.map(v => {
                           if (v.itemId != id)
-                            return v
+                            return v;
                           return {
                             ...v,
                             quantity: e.target.value
-                          }
-                        })
-                        await updateCart(newCart)
-                        setCart(newCart)
+                          };
+                        });
+                        await updateCart(newCart);
+                        setCart(newCart);
                       }} />
                     <button id={item.itemId} type='submit' onClick={async (e) => {
-                      const newCart = cart.filter(v => v.itemId != e.target.id)
-                      await updateCart(newCart)
-                      setCart(newCart)
+                      const newCart = cart.filter(v => v.itemId != e.target.id);
+                      await updateCart(newCart);
+                      setCart(newCart);
                     }}>Loại bỏ</button>
                   </Box>
                 </Box>
               </Box>
-            )
+            );
           })}
         </Box>
       </Grid>
@@ -201,7 +243,8 @@ export default function Checkout() {
           Xác nhận đặt hàng
         </Button>
       </Grid>
-    </Container>
-  )
+    </Container> 
+    </>
+  );
 }
-Checkout.getLayout = page => <DefaultLayout> {page} </DefaultLayout>
+Checkout.getLayout = page => <DefaultLayout> {page} </DefaultLayout>;

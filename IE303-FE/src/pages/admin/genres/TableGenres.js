@@ -62,7 +62,7 @@ const TableGenres = ({ rows, onDelete }) => {
                 {row.name}
               </TableCell>
               <TableCell component='th' scope='row'>
-                <img height={'100px'} width={'100px'} sx={{ cursor: 'pointer' }} src={row.images[0]} />
+                <img height={'100px'} width={'100px'} sx={{ cursor: 'pointer' }} src={row.image} />
               </TableCell>
               <TableCell align='center'>
                 <Link href={`/admin/genres/update/${row.id}`}>

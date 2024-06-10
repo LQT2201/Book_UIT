@@ -96,6 +96,7 @@ const ProductDetail = (params) => {
       const bookResponse = await fetch(`${BASE_URL}/book/${router.query.id}`);
       const bookData = await bookResponse.json();
       setBook(bookData);
+
       const relatedBooksResponse = await fetch(`${BASE_URL}/book?genre=${bookData.genre}`);
       const relatedBooksData = await relatedBooksResponse.json();
       setRelatedBooks(relatedBooksData);
@@ -142,8 +143,6 @@ const ProductDetail = (params) => {
   if (isLoading) {
     return <p>Đang tải</p>;
   }
-
-
 
 
   return (

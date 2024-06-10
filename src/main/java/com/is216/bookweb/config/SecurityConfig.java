@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -60,7 +61,6 @@ public class SecurityConfig {
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer
                         .configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests((requests) -> requests
-<<<<<<< HEAD
                     // Public access
                     .requestMatchers(HttpMethod.POST, "/login/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/book/**", "/api/genre/**").permitAll()
@@ -75,16 +75,10 @@ public class SecurityConfig {
                     .requestMatchers("/api/user/cart" ).hasAnyRole("USER", "ADMIN")
                     .anyRequest().authenticated()
                         
+                    
                         );
                         // .requestMatchers("/api/**").hasAnyRole("ADMIN","USER")
                         // .anyRequest().authenticated());
-=======
-                        .requestMatchers("/login/**")
-                        .permitAll()
-                        .requestMatchers("/api/book/**", "/api/genre/**", "/api/author/**").permitAll()
-                        
-                        .anyRequest().permitAll());
->>>>>>> e0af1760273923623c8b86f9010029bd3ef77dc1
         http.addFilterBefore(customJwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
