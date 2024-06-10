@@ -15,26 +15,40 @@ import DotsVertical from 'mdi-material-ui/DotsVertical'
 import CellphoneLink from 'mdi-material-ui/CellphoneLink'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 
-const BASE_URL = 'http://127.0.0.1:8080/api' // Ensure this is correctly set
+const BASE_URL = 'http://127.0.0.1:8080/api'
 
 const StatisticsCard = () => {
   const [orders, setOrders] = useState([])
+  const [books, setBooks] = useState([])
   const [users, setUsers] = useState([])
   const [maxTotalPrice, setMaxTotalPrice] = useState(0)
+  const [totalStock, setTotalStock] = useState(0)
+  const [orderCount, setOrderCount] = useState(0)
   const [userCount, setUserCount] = useState(0)
+
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const fetchOrders = fetch(`${BASE_URL}/order`).then(resp => resp.json())
-        const fetchUsers = fetch(`${BASE_URL}/user`).then(resp => resp.json())
-        const [fetchOrder, fetchUser] = await Promise.all([fetchOrders, fetchUsers])
+        const fetchBooks = fetch(`${BASE_URL}/book`).then(resp => resp.json())
+        const fetchUsers = fetch(`${BASE_URL}/user`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }).then(resp => resp.json())
+        const [fetchOrder, fetchBook, fetchUserResponse] = await Promise.all([fetchOrders, fetchBooks, fetchUsers])
 
         console.log('Fetched orders:', fetchOrder)
-        console.log('Fetched users:', fetchUser)
+        console.log('Fetched books:', fetchBook)
+        console.log('Fetched users:', fetchUserResponse)
 
         setOrders(fetchOrder)
-        setUsers(fetchUser)
+        setBooks(fetchBook)
+        setUsers(fetchUserResponse.data)
+        setOrderCount(fetchOrder.length)
+        console.log(users)
       } catch (error) {
         console.log(error)
       }
@@ -57,36 +71,43 @@ const StatisticsCard = () => {
       setMaxTotalPrice(maxPrice)
     }
 
-    if (users.length > 0) {
-      const userCount = users.filter(user => user.role === 'USER').length
-      console.log('Calculated userCount:', userCount)
-      setUserCount(userCount)
+    if (books.length > 0) {
+      const totalStock = books.reduce((acc, book) => acc + (book.stock || 0), 0)
+      console.log('Calculated totalStock:', totalStock)
+      setTotalStock(totalStock)
     }
-  }, [orders, users])
+
+    if (users.length > 0) {
+      const adminUsers = users.filter(user => user.role === 'USER')
+      console.log('Admin users:', adminUsers)
+      setUserCount(adminUsers.length)
+    }
+  }, [orders, books, users])
 
   const salesData = [
     {
-      stats: `$${maxTotalPrice}`, // Chuyển đổi maxTotalPrice thành dạng hiển thị tiền tệ
-      title: 'Best Sales',
+      stats: `${orderCount}`, // Chuyển đổi maxTotalPrice thành dạng hiển thị tiền tệ
+      title: 'Sum Orders',
       color: 'primary',
       icon: <TrendingUp sx={{ fontSize: '1.75rem' }} />
     },
     {
       stats: `${userCount}`,
-      title: 'Users',
+      title: 'Account Users',
       color: 'success',
       icon: <AccountOutline sx={{ fontSize: '1.75rem' }} />
     },
     {
-      stats: '1.54k',
+      stats: `${totalStock}`,
+      title: 'Total Stock',
       color: 'warning',
-      title: 'Products',
       icon: <CellphoneLink sx={{ fontSize: '1.75rem' }} />
     },
+
     {
-      stats: '$88k',
+      stats: `$${maxTotalPrice}`,
       color: 'info',
-      title: 'Revenue',
+      title: 'Best sale',
       icon: <CurrencyUsd sx={{ fontSize: '1.75rem' }} />
     }
   ]

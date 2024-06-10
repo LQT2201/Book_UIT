@@ -64,7 +64,7 @@ const Trophy = () => {
           Total Price of all Orders
         </Typography>
         <Typography variant='h5' sx={{ my: 4, color: 'primary.main' }}>
-          {total}
+          ${total}
         </Typography>
 
         <TriangleImg alt='triangle background' src={`/images/misc/${imageSrc}`} />

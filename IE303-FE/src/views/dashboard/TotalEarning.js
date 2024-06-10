@@ -11,42 +11,85 @@ import LinearProgress from '@mui/material/LinearProgress'
 // ** Icons Imports
 import MenuUp from 'mdi-material-ui/MenuUp'
 import DotsVertical from 'mdi-material-ui/DotsVertical'
-
-const data = [
-  {
-    progress: 75,
-    imgHeight: 20,
-    title: 'Zipcar',
-    color: 'primary',
-    amount: '$24,895.65',
-    subtitle: 'Vuejs, React & HTML',
-    imgSrc: '/images/cards/logo-zipcar.png'
-  },
-  {
-    progress: 50,
-    color: 'info',
-    imgHeight: 27,
-    title: 'Bitbank',
-    amount: '$8,650.20',
-    subtitle: 'Sketch, Figma & XD',
-    imgSrc: '/images/cards/logo-bitbank.png'
-  },
-  {
-    progress: 20,
-    imgHeight: 20,
-    title: 'Aviato',
-    color: 'secondary',
-    amount: '$1,245.80',
-    subtitle: 'HTML & Angular',
-    imgSrc: '/images/cards/logo-aviato.png'
-  }
-]
+import React, { useState, useEffect } from 'react'
 
 const TotalEarning = () => {
+  const [orders, setOrders] = useState([])
+  const [total, setTotal] = useState(0)
+  const [canceledCount, setCanceledCount] = useState(0)
+  const [deliveredCount, setDeliveredCount] = useState(0)
+  const [shippingCount, setShippingCount] = useState(0)
+  const sum = canceledCount + deliveredCount + shippingCount
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const token = localStorage.getItem('token')
+        const response = await fetch('http://127.0.0.1:8080/api/order')
+        const orders = await response.json()
+        setOrders(orders)
+
+        const totalPrices = orders.map(order =>
+          typeof order.totalPrice === 'object'
+            ? parseFloat(order.totalPrice.$numberDecimal)
+            : parseFloat(order.totalPrice)
+        )
+
+        // Sử dụng reduce để tính tổng
+        const totalAmount = totalPrices.reduce((acc, price) => acc + price, 0)
+
+        // Set giá trị tổng vào state total
+        setTotal(totalAmount)
+
+        const canceled = orders.filter(order => order.orderStatus === '"Đã hủy"').length
+        const delivered = orders.filter(order => order.orderStatus === '"Đã nhận"').length
+        const shipping = orders.filter(order => order.orderStatus === '"Đang giao"').length
+
+        setCanceledCount(canceled)
+        setDeliveredCount(delivered)
+        setShippingCount(shipping)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchOrders()
+  }, [])
+
+  const data = [
+    {
+      progress: (canceledCount / sum) * 100,
+      imgHeight: 20,
+      title: 'Zipcar',
+      color: 'primary',
+      amount: `${canceledCount}`,
+      subtitle: 'Vuejs, React & HTML',
+      imgSrc: '/images/cards/logo-zipcar.png'
+    },
+    {
+      progress: 50,
+      color: 'info',
+      imgHeight: 27,
+      title: 'Bitbank',
+      amount: '$8,650.20',
+      subtitle: 'Sketch, Figma & XD',
+      imgSrc: '/images/cards/logo-bitbank.png'
+    },
+    {
+      progress: 20,
+      imgHeight: 20,
+      title: 'Aviato',
+      color: 'secondary',
+      amount: '$1,245.80',
+      subtitle: 'HTML & Angular',
+      imgSrc: '/images/cards/logo-aviato.png'
+    }
+  ]
+
   return (
     <Card>
       <CardHeader
-        title='Total Earning'
+        title='Detail Orders'
         titleTypographyProps={{ sx: { lineHeight: '1.6 !important', letterSpacing: '0.15px !important' } }}
         action={
           <IconButton size='small' aria-label='settings' className='card-more-options' sx={{ color: 'text.secondary' }}>
@@ -57,7 +100,7 @@ const TotalEarning = () => {
       <CardContent sx={{ pt: theme => `${theme.spacing(2.25)} !important` }}>
         <Box sx={{ mb: 1.5, display: 'flex', alignItems: 'center' }}>
           <Typography variant='h4' sx={{ fontWeight: 600, fontSize: '2.125rem !important' }}>
-            $24,895
+            ${total}
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', color: 'success.main' }}>
             <MenuUp sx={{ fontSize: '1.875rem', verticalAlign: 'middle' }} />
@@ -66,10 +109,6 @@ const TotalEarning = () => {
             </Typography>
           </Box>
         </Box>
-
-        <Typography component='p' variant='caption' sx={{ mb: 10 }}>
-          Compared to $84,325 last year
-        </Typography>
 
         {data.map((item, index) => {
           return (
