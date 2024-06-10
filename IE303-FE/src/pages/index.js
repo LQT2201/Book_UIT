@@ -19,6 +19,9 @@ const HomePage = () => {
     }
     fetchData().catch((error) => {console.log(error)})
   }, [])
+
+
+  console.log(books)
   return (
     <Box>
       <Banner/>

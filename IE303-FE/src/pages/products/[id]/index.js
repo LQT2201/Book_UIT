@@ -88,44 +88,49 @@ const ProductDetail = (params) => {
     }
   };
   const [author, setAuthor] = useState(null)
+
+  const fetchBookData = async () => {
+    if (!router.query.id) return;
+
+    try {
+      const bookResponse = await fetch(`${BASE_URL}/book/${router.query.id}`);
+      const bookData = await bookResponse.json();
+      setBook(bookData);
+      const relatedBooksResponse = await fetch(`${BASE_URL}/book?genre=${bookData.genre}`);
+      const relatedBooksData = await relatedBooksResponse.json();
+      setRelatedBooks(relatedBooksData);
+      // const authors = await fetch(`${BASE_URL}/author`).then(res => res.json())
+      // console.log(authors)
+      // for(const author of authors) {
+      //   if(author && (author.name == bookData.author)) {
+      //     setAuthor(author)
+      //     break
+      //   }
+      // }
+      // const recommendationsResponse = await fetch(
+      //   `${BASE_URL}/recommend?numberOfRecommendations=3`,
+      //   {
+      //     method: 'POST',
+      //     headers: { 'Content-Type': 'application/json' },
+      //     body: JSON.stringify(bookData),
+      //   }
+      // );
+      // const recommendationsData = await recommendationsResponse.json();
+      // setRecommendations(recommendationsData);
+
+      console.log("con cac" + bookData)
+      // console.log(recommendations)
+
+      setIsLoading(false);
+    } catch (error) {
+      setError(true);
+      console.log(error);
+    }
+  };
+
+ 
+
   useEffect(() => {
-    const fetchBookData = async () => {
-      if (!router.query.id) return;
-
-      try {
-        const bookResponse = await fetch(`${BASE_URL}/book/${router.query.id}`);
-        const bookData = await bookResponse.json();
-        setBook(bookData);
-        const relatedBooksResponse = await fetch(`${BASE_URL}/book?genre=${bookData.genre}`);
-        const relatedBooksData = await relatedBooksResponse.json();
-        setRelatedBooks(relatedBooksData);
-        const authors = await fetch(`${BASE_URL}/author`).then(res => res.json())
-        console.log(authors)
-        for(const author of authors) {
-          if(author && (author.name == bookData.author)) {
-            setAuthor(author)
-            break
-          }
-        }
-        const recommendationsResponse = await fetch(
-          `${BASE_URL}/recommend?numberOfRecommendations=3`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(bookData),
-          }
-        );
-        const recommendationsData = await recommendationsResponse.json();
-        setRecommendations(recommendationsData);
-
-        // console.log(recommendations)
-
-        setIsLoading(false);
-      } catch (error) {
-        setError(true);
-        console.log(error);
-      }
-    };
 
     fetchBookData();
   }, [router.query.id]);
@@ -137,6 +142,9 @@ const ProductDetail = (params) => {
   if (isLoading) {
     return <p>Đang tải</p>;
   }
+
+
+
 
   return (
     <Container maxWidth="lg">

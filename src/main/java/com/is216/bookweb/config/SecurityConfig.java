@@ -61,11 +61,23 @@ public class SecurityConfig {
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer
                         .configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/login/**")
-                        .permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/book/**", "/api/genre/**", "/api/author/**").permitAll()
-                        .requestMatchers("/api/**").hasAnyRole("ADMIN","USER")
-                        .anyRequest().authenticated());
+                    // Public access
+                    .requestMatchers(HttpMethod.POST, "/login/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/book/**", "/api/genre/**").permitAll()
+                    .requestMatchers(HttpMethod.GET,"/api/payment/**").permitAll()
+                    // User and Admin access
+                    .requestMatchers(HttpMethod.GET, 
+                                    "/api/user/profile", 
+                                    "/api/user/cart", 
+                                    "/api/user/order")
+                        .hasAnyRole("USER", "ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/api/order/checkout").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/api/user/cart" ).hasAnyRole("USER", "ADMIN")
+                    .anyRequest().authenticated()
+                        
+                        );
+                        // .requestMatchers("/api/**").hasAnyRole("ADMIN","USER")
+                        // .anyRequest().authenticated());
         http.addFilterBefore(customJwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

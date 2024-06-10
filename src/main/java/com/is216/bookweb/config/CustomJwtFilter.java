@@ -25,46 +25,50 @@ import org.springframework.stereotype.Component;
 public class CustomJwtFilter extends OncePerRequestFilter{
 
     @Autowired
-    JwtHelper jwtHelper;
-
+    private JwtHelper jwtHelper;
 
     @Autowired
-    CustomUserDetailsService customUserDetailsService;
+    private CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+        // URLs to bypass the filter
+        String[] bypassUrls = {"/login/**",  "/api/payment"};
+
+        // Check if the request URL matches any of the bypass URLs
+        for (String url : bypassUrls) {
+            if (request.getRequestURI().startsWith(url)) {
+                // Bypass the filter for this request
+                filterChain.doFilter(request, response);
+                return;
+            }
+        }
+
         String token = getJwtFromRequest(request);
 
-        if(token == null) {
-            filterChain.doFilter(request, response);
-            return ;
+        if (token != null) {
+            String username = jwtHelper.extractUsername(token);
+            if (username != null) {
+                var user = customUserDetailsService.loadUserByUsername(username);
+                if (jwtHelper.verifyToken(token)) {
+                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, user.getAuthorities());
+                    SecurityContext securityContext = SecurityContextHolder.getContext();
+                    securityContext.setAuthentication(auth);
+                }
+            }
         }
         
-        String username = jwtHelper.extractUsername(token);
-        var user = customUserDetailsService.loadUserByUsername(username);
-
-        if (token != null) {
-            if (jwtHelper.verifyToken(token)) {
-                System.out.println(user.getAuthorities());
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username,null,user.getAuthorities());
-                SecurityContext securityContext = SecurityContextHolder.getContext();
-                securityContext.setAuthentication(auth);
-            }
-            
-        }
-            
-        filterChain.doFilter(request, response);  
-
+        // Continue the filter chain
+        filterChain.doFilter(request, response);
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        String token = null;
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            token =  bearerToken.substring(7);
+            return bearerToken.substring(7);
         }
-        return token;
+        return null;
     }
-
 }

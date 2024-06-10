@@ -13,6 +13,7 @@ public class BoughtInformation {
     @Field(targetType = FieldType.DECIMAL128)
     BigDecimal price;
     String image;
+    
     public BoughtInformation() {
 
     }
