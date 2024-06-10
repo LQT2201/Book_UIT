@@ -13,6 +13,8 @@ import MenuUp from 'mdi-material-ui/MenuUp'
 import DotsVertical from 'mdi-material-ui/DotsVertical'
 import React, { useState, useEffect } from 'react'
 
+const BASE_URL = 'http://127.0.0.1:8080/api'
+
 const TotalEarning = () => {
   const [orders, setOrders] = useState([])
   const [total, setTotal] = useState(0)
@@ -22,14 +24,21 @@ const TotalEarning = () => {
   const sum = canceledCount + deliveredCount + shippingCount
 
   useEffect(() => {
+    const token = localStorage.getItem('token')
+
     const fetchOrders = async () => {
       try {
-        const token = localStorage.getItem('token')
-        const response = await fetch('http://127.0.0.1:8080/api/order')
-        const orders = await response.json()
-        setOrders(orders)
+        const response = await fetch(`${BASE_URL}/order`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        const fetchOrder = await response.json()
 
-        const totalPrices = orders.map(order =>
+        console.log('Fetched orders:', fetchOrder)
+        setOrders(fetchOrder)
+
+        const totalPrices = fetchOrder.map(order =>
           typeof order.totalPrice === 'object'
             ? parseFloat(order.totalPrice.$numberDecimal)
             : parseFloat(order.totalPrice)
@@ -40,10 +49,9 @@ const TotalEarning = () => {
 
         // Set giá trị tổng vào state total
         setTotal(totalAmount)
-
-        const canceled = orders.filter(order => order.orderStatus === '"Đã hủy"').length
-        const delivered = orders.filter(order => order.orderStatus === '"Đã nhận"').length
-        const shipping = orders.filter(order => order.orderStatus === '"Đang giao"').length
+        const canceled = fetchOrder.filter(order => order.orderStatus === '"Đã hủy"').length
+        const delivered = fetchOrder.filter(order => order.orderStatus === '"Đã nhận"').length
+        const shipping = fetchOrder.filter(order => order.orderStatus === '"Đang giao"').length
 
         setCanceledCount(canceled)
         setDeliveredCount(delivered)
@@ -58,30 +66,27 @@ const TotalEarning = () => {
 
   const data = [
     {
-      progress: (canceledCount / sum) * 100,
+      progress: (deliveredCount / sum) * 100,
       imgHeight: 20,
-      title: 'Zipcar',
+      title: 'DELIVERED',
       color: 'primary',
-      amount: `${canceledCount}`,
-      subtitle: 'Vuejs, React & HTML',
+      amount: `${deliveredCount}`,
       imgSrc: '/images/cards/logo-zipcar.png'
     },
     {
-      progress: 50,
+      progress: (shippingCount / sum) * 100,
       color: 'info',
       imgHeight: 27,
-      title: 'Bitbank',
-      amount: '$8,650.20',
-      subtitle: 'Sketch, Figma & XD',
+      title: 'SHIPPING',
+      amount: `${shippingCount}`,
       imgSrc: '/images/cards/logo-bitbank.png'
     },
     {
-      progress: 20,
+      progress: (canceledCount / sum) * 100,
       imgHeight: 20,
-      title: 'Aviato',
+      title: 'CANCELED',
       color: 'secondary',
-      amount: '$1,245.80',
-      subtitle: 'HTML & Angular',
+      amount: `${canceledCount}`,
       imgSrc: '/images/cards/logo-aviato.png'
     }
   ]
@@ -144,7 +149,6 @@ const TotalEarning = () => {
                   <Typography variant='body2' sx={{ mb: 0.5, fontWeight: 600, color: 'text.primary' }}>
                     {item.title}
                   </Typography>
-                  <Typography variant='caption'>{item.subtitle}</Typography>
                 </Box>
 
                 <Box sx={{ minWidth: 85, display: 'flex', flexDirection: 'column' }}>

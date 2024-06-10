@@ -18,7 +18,7 @@ import AccountOutline from 'mdi-material-ui/AccountOutline'
 const BASE_URL = 'http://127.0.0.1:8080/api'
 
 const StatisticsCard = () => {
-  const [orders, setOrders] = useState([])
+  const [orders, setOrders] = useState({})
   const [books, setBooks] = useState([])
   const [users, setUsers] = useState([])
   const [maxTotalPrice, setMaxTotalPrice] = useState(0)
@@ -26,12 +26,15 @@ const StatisticsCard = () => {
   const [orderCount, setOrderCount] = useState(0)
   const [userCount, setUserCount] = useState(0)
 
-  const token = localStorage.getItem('token')
-
   useEffect(() => {
+    const token = localStorage.getItem('token')
     const fetchData = async () => {
       try {
-        const fetchOrders = fetch(`${BASE_URL}/order`).then(resp => resp.json())
+        const fetchOrders = fetch(`${BASE_URL}/order`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }).then(resp => resp.json())
         const fetchBooks = fetch(`${BASE_URL}/book`).then(resp => resp.json())
         const fetchUsers = fetch(`${BASE_URL}/user`, {
           headers: {
@@ -40,13 +43,9 @@ const StatisticsCard = () => {
         }).then(resp => resp.json())
         const [fetchOrder, fetchBook, fetchUserResponse] = await Promise.all([fetchOrders, fetchBooks, fetchUsers])
 
-        console.log('Fetched orders:', fetchOrder)
-        console.log('Fetched books:', fetchBook)
-        console.log('Fetched users:', fetchUserResponse)
-
         setOrders(fetchOrder)
         setBooks(fetchBook)
-        setUsers(fetchUserResponse.data)
+        setUsers(fetchUserResponse)
         setOrderCount(fetchOrder.length)
         console.log(users)
       } catch (error) {
