@@ -67,7 +67,7 @@ const UpdateOrder = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ orderStatus }) // Sử dụng đúng tên trường
+        body: JSON.stringify(orderStatus) // Sử dụng đúng tên trường
       })
       if (!response.ok) throw new Error('Failed to update order status')
       Swal.fire('Đã cập nhật', '', 'success')
