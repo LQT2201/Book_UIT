@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.is216.bookweb.config.CustomUserDetailsService;
+
 import com.is216.bookweb.models.Book;
 import com.is216.bookweb.models.BoughtInformation;
 import com.is216.bookweb.models.User;
@@ -20,7 +20,6 @@ import com.is216.bookweb.repositories.BookRepository;
 import com.is216.bookweb.repositories.UserRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -37,10 +36,10 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<?> getAllUser() {
         
-        ResponseData responseData = new ResponseData();
-        responseData.setData(userRepository.findAll());
 
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
+       
+
+        return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
     }
     
 

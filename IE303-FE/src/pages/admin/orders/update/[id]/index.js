@@ -61,16 +61,21 @@ const UpdateOrder = () => {
   }
 
   const handleUpdate = async () => {
+    const token = localStorage.getItem("token")
     try {
       const response = await fetch(`${BASE_URL}/order/${router.query.id}`, {
         method: 'PATCH',
         headers: {
+          Authorization:`Bearer ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(orderStatus) // Sử dụng đúng tên trường
       })
-      if (!response.ok) throw new Error('Failed to update order status')
-      Swal.fire('Đã cập nhật', '', 'success')
+      if (response.ok){
+        Swal.fire('Đã cập nhật', '', 'success')
+        router.back() 
+      }
+      
     } catch (error) {
       console.error('Error updating order status:', error)
       alert('Failed to update order status')

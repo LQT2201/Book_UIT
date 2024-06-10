@@ -80,7 +80,7 @@ public class BookController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateBook(@PathVariable("id") String id,  
-            @RequestParam(value = "title", required = true)  String title,
+            @RequestParam(value = "title")  String title,
             @RequestParam("author")  String author,
             @RequestParam("genre")  String genre,
             @RequestParam("description")  String description,

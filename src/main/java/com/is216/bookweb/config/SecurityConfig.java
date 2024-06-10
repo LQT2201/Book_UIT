@@ -65,20 +65,20 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/login/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/book/**", "/api/genre/**").permitAll()
                     .requestMatchers(HttpMethod.GET,"/api/payment/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/order/**").permitAll()
+                   
                     // User and Admin access
-                    .requestMatchers(HttpMethod.GET, 
-                                    "/api/user/**", 
-                                    "/api/user/cart", 
-                                    "/api/user/order")
-                        .hasAnyRole("USER", "ADMIN")
+                    
                     .requestMatchers(HttpMethod.POST, "/api/order/checkout").hasAnyRole("USER", "ADMIN")
                     .requestMatchers("/api/user/cart" ).hasAnyRole("USER", "ADMIN")
                     // Admin
-                    .requestMatchers(HttpMethod.POST,"/api/book/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.PATCH, "/api/book/**").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.DELETE, "/api/book/**").hasRole("ADMIN")
-                    .anyRequest().authenticated());
+                    .requestMatchers(HttpMethod.GET,"/api/user/**","/api/order/**").hasAnyRole("ADMIN","USER")
+                    .requestMatchers(HttpMethod.POST,"/api/book/**", "/api/genre/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PATCH, "/api/book/**","/api/order/**", "/api/genre/**")
+                        .hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.DELETE, "/api/book/**","/api/genre/**")
+                        .hasRole("ADMIN")
+                    .anyRequest()
+                        .authenticated());
                         // .requestMatchers("/api/**").hasAnyRole("ADMIN","USER")
                         // .anyRequest().authenticated());
         http.addFilterBefore(customJwtFilter, UsernamePasswordAuthenticationFilter.class);

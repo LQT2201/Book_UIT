@@ -1,32 +1,47 @@
-import { Card, CardContent, CardHeader, Grid, Typography, Button } from '@mui/material'
-import React from 'react'
-import Link from '@mui/material/Link'
-import TableOrders from './TableOrders'
-import AddBoxIcon from '@mui/icons-material/AddBox'
+import { Card, CardContent, Grid } from '@mui/material';
+import React from 'react';
+import TableOrders from './TableOrders';
 
 const Order = () => {
-  const [orders, setOrders] = React.useState([])
+  const [orders, setOrders] = React.useState([]);
+
   React.useEffect(() => {
-    const f = async () => {
-      if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('token')
-        const orders = await fetch('http://127.0.0.1:8080/api/order').then(r => r.json())
-        setOrders(orders)
+    const token = localStorage.getItem("token");
+    const fetchOrder = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8080/api/order", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setOrders(data);
+         
+        } else {
+          alert("Get thất bại");
+        }
+      } catch (error) {
+        alert("Error: " + error);
       }
-    }
-    f().catch(err => console.log(err))
-  }, [])
+    };
+
+    fetchOrder();
+  }, []);
 
   return (
     <Grid container>
       <Grid item xs={12}>
         <Card>
-          <CardContent></CardContent>
-          <TableOrders rows={orders} />
+          <CardContent>
+            <TableOrders rows={orders} />
+          </CardContent>
         </Card>
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-export default Order
+export default Order;

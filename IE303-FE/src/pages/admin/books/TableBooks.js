@@ -20,7 +20,7 @@ const TableBooks = ({ rows, onDelete }) => {
   const router = useRouter();
 
   const handleDelete = async (id) => {
-    
+      const token = localStorage.getItem("token")
 
       try {
         const response = await fetch(`${BASE_URL}/book/${id}`, {

@@ -100,6 +100,8 @@ public class BookService {
         
         try {
            Book book =  bookRepository.findById(id).get();
+
+            
            book.setTitle(title);
            book.setAuthor(author);
            book.setDescription(description);
@@ -114,7 +116,7 @@ public class BookService {
                 imgUrls.add(cloundinaryService.uploadFile(img));
             }
            }
-           
+
            book.setImages(imgUrls);
            bookRepository.save(book);
            isSuccess = true;
