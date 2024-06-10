@@ -7,9 +7,8 @@ import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import CardContent from '@mui/material/CardContent'
 import { styled } from '@mui/material/styles'
-import {  useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
-
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -41,35 +40,48 @@ const UpdateGenre = () => {
   useEffect(() => {
     const f = async () => {
       const genre = await fetch(`${BASE_URL}/${router.query.id}`).then(r => r.json())
-      setGenre(genre)
+      setGenre(genre[0])
     }
-    if (router.query.id)
-      f().catch(err => console.log(err))
+
+    if (router.query.id) f().catch(err => console.log(err))
   }, [router.query.id])
-  const handleChange = (e) => {
-    setGenre((prev) => {
+  const handleChange = e => {
+    setGenre(prev => {
       return {
         ...prev,
         [e.target.name]: e.target.value
       }
     })
   }
-  const handleClick = async() => {
+  const handleClick = async () => {
     const token = localStorage.getItem('token')
-    await fetch(`${BASE_URL}?id=${genre.id}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: genre.name,
-        description: genre.description
+    console.log(genre)
+    try {
+      const response = await fetch(`${BASE_URL}/${genre.id}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+          name: genre.name,
+          description: genre.description,
+          images: genre.images // Assuming `images` is a string
+        })
       })
-    })
 
-    Swal.fire("Sửa thành công", "", "success");
-    router.push('/admin/genres')
+      if (response.ok) {
+        Swal.fire('Sửa thành công', '', 'success')
+        router.push('/admin/genres')
+      } else {
+        const errorData = await response.json()
+        console.error('Error updating genre:', errorData)
+        Swal.fire('Sửa thất bại', errorData.error, 'error')
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      Swal.fire('Sửa thất bại', error.message, 'error')
+    }
   }
   return (
     <CardContent>
@@ -79,29 +91,27 @@ const UpdateGenre = () => {
             <TextField
               fullWidth
               multiline
-             
               minRows={1}
-              defaultValue={genre.name}
+              value={genre.name || ''}
               name='name'
-              onChange={(e) => handleChange(e)}
+              onChange={e => handleChange(e)}
             />
           </Grid>
           <Grid item xs={4} sx={{ marginTop: 4.8 }}>
             <TextField
               fullWidth
               multiline
-              
               minRows={1}
               name='description'
-              defaultValue={genre.description}
-              onChange={(e) => handleChange(e)}
+              defaultValue={genre.description || ''}
+              onChange={e => handleChange(e)}
             />
           </Grid>
           <Grid item xs={12}>
             <Button variant='contained' sx={{ marginRight: 3.5 }} onClick={handleClick}>
-              Thêm
+              Sửa
             </Button>
-            <Button type='reset' variant='outlined' color='secondary' >
+            <Button type='reset' variant='outlined' color='secondary'>
               Reset
             </Button>
           </Grid>

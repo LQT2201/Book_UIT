@@ -54,14 +54,14 @@ public class BookController {
             @RequestParam(value = "title", required = true)  String title,
             @RequestParam("author")  String author,
             @RequestParam("genre")  String genre,
-            @RequestParam("descrition")  String descrition,
+            @RequestParam("description")  String description,
             @RequestParam("stock")  Integer stock,
             @RequestParam("price")  BigDecimal price,
             @RequestParam("salePrice")  BigDecimal salePrice,
             @RequestParam(value = "images", required = false) List<MultipartFile> images ) {
         
         ResponseData responseData = new ResponseData();
-        boolean success = bookService.createBook(title, author, genre, descrition, stock, price, salePrice,images);
+        boolean success = bookService.createBook(title, author, genre, description, stock, price, salePrice,images);
         responseData.setData(success);
         
         return new ResponseEntity<>(responseData,HttpStatus.OK );

@@ -6,41 +6,37 @@ import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import BuildIcon from '@mui/icons-material/Build';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import BuildIcon from '@mui/icons-material/Build'
 import { IconButton, Link } from '@mui/material'
 import formater from 'src/utils/formatCurrency'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
 
-const BASE_URL = 'http://127.0.0.1:8080/api';
+const BASE_URL = 'http://127.0.0.1:8080/api'
 
-const TableGenres = ({rows, onDelete}) => {
+const TableGenres = ({ rows, onDelete }) => {
+  const router = useRouter()
 
-  const router = useRouter();
-
-  const handleDelete = async (id) => {
-      const token = localStorage.getItem('token')
-      try {
-        const response = await fetch(`${BASE_URL}/genre/${id}`, {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }
-        });
-
-        if (response.ok) {
-          Swal.fire("Đã xóa!", "", "success");
-          router.reload()
-        } else {
-          
+  const handleDelete = async id => {
+    const token = localStorage.getItem('token')
+    try {
+      const response = await fetch(`${BASE_URL}/genre/delete/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      } catch (error) {
-        console.error('Error deleting book:', error);
-        
+      })
+
+      if (response.ok) {
+        Swal.fire('Đã xóa!', '', 'success')
+        router.reload()
+      } else {
       }
-    
-  };
+    } catch (error) {
+      console.error('Error deleting book:', error)
+    }
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -48,6 +44,7 @@ const TableGenres = ({rows, onDelete}) => {
         <TableHead>
           <TableRow>
             <TableCell>Tên thể loại sách</TableCell>
+            <TableCell>Hình ảnh</TableCell>
             <TableCell align='center'>Thao tác</TableCell>
           </TableRow>
         </TableHead>
@@ -64,14 +61,17 @@ const TableGenres = ({rows, onDelete}) => {
               <TableCell component='th' scope='row'>
                 {row.name}
               </TableCell>
-              <TableCell align='center'> 
+              <TableCell component='th' scope='row'>
+                <img height={'100px'} width={'100px'} sx={{ cursor: 'pointer' }} src={row.images[0]} />
+              </TableCell>
+              <TableCell align='center'>
                 <Link href={`/admin/genres/update/${row.id}`}>
-                    <IconButton color='red'>
-                    <BuildIcon sx={{color:"blue"}}/>
-                    </IconButton>
+                  <IconButton color='red'>
+                    <BuildIcon sx={{ color: 'blue' }} />
+                  </IconButton>
                 </Link>
                 <IconButton onClick={() => handleDelete(row.id)}>
-                  <DeleteForeverIcon sx={{color:"red"}}/>
+                  <DeleteForeverIcon sx={{ color: 'red' }} />
                 </IconButton>
               </TableCell>
             </TableRow>

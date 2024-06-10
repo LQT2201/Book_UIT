@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.is216.bookweb.models.Genre;
 
+
 @Repository
 public interface  GenreRepository extends  MongoRepository<Genre, String>{
 

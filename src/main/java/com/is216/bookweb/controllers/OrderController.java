@@ -48,8 +48,8 @@ public class OrderController {
     }
 
     @PatchMapping("/{id}")
-    public String updateOrder(@PathVariable(name = "id") String id, @RequestBody Order order) {
-        return orderService.updateOrder(id, order);
+    public String updateOrder(@PathVariable("id") String id, @RequestBody String status) {
+        return orderService.updateOrder(id, status);
     }
 
 }
