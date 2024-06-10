@@ -4,11 +4,26 @@ import DefaultLayout from 'src/layouts/DefaultLayout'
 import Banner from 'src/layouts/components/Banner'
 import Category from 'src/components/Category'
 import LatestBook from 'src/components/LatestBook'
+import router from 'next/router'
+import { useRouter } from 'next/router';
+
 
 const BASE_URL = 'http://127.0.0.1:8080/api'
 const HomePage = () => {
   const [genres, setGenres] = useState(null)
   const [books, setBooks] = useState(null)
+
+
+  const router = useRouter();
+  const href = router.asPath; // Lấy URL đầy đủ hiện tại
+
+
+
+  const fetchVnpay = async () => {
+    const fetchVn = await fetch(`http://localhost:8080/api/payment/vn-pay-callback/${href}`)
+  }
+
+
   useEffect(() => {
     const fetchData = async() => {
       const fetchGenres = fetch(`${BASE_URL}/genre`).then(resp => resp.json())
@@ -18,6 +33,7 @@ const HomePage = () => {
       setBooks(fetchedBook)
     }
     fetchData().catch((error) => {console.log(error)})
+    fetchVnpay
   }, [])
 
 

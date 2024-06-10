@@ -57,7 +57,7 @@ public class OrderController {
     }
 
     @PostMapping()
-    public String createGenre(@RequestBody Order order) {
+    public Order createGenre(@RequestBody Order order) {
         return orderService.createOrder(order);
     }
 
@@ -70,6 +70,14 @@ public class OrderController {
     public String updateOrder(@PathVariable("id") String id, @RequestBody String status) {
         return orderService.updateOrder(id, status);
     }
+
+    @PostMapping("/checkout/vn-pay")
+    public String createVnpapOrder(@RequestBody String entity) {
+        
+        
+        return entity;
+    }
+    
 
     @PostMapping("/checkout")
     public ResponseEntity<?> createOrder(@RequestBody String shippingAddress) {

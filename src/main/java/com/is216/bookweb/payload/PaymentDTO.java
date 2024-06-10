@@ -8,5 +8,6 @@ public abstract class PaymentDTO {
         public String code;
         public String message;
         public String paymentUrl;
+        public String address;
     }
 }

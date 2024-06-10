@@ -23,13 +23,13 @@ public class OrderService {
     }
 
     
-    public String createOrder(Order order) {
+    public Order createOrder(Order order) {
         try{
             orderRepository.save(order);
-            return "Add success";
+            return order;
         }
         catch (Exception e) {
-            return "Fail";
+            return null;
         }
     }
 

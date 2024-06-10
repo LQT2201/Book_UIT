@@ -25,7 +25,14 @@ export default function Checkout() {
   const [token, setToken] = useState('');
   const [cart, setCart] = useState([]);
   const [address, setAddress] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState("COD");
+  const [amount, setAmount] = useState(0);
   
+  const calculateTotal  = () => cart.reduce((acc, curr) => acc + curr.quantity * curr.price, 0)
+  const total = Number(calculateTotal());
+  
+  
+
   const updateCart = async (newCart) => {
     await fetch(`${BASE_URL}/user/cart`, {
       method: "POST",
@@ -35,6 +42,7 @@ export default function Checkout() {
       },
       body: JSON.stringify(newCart)
     });
+
   };
 
   useEffect(() => {
@@ -58,25 +66,56 @@ export default function Checkout() {
     }
   }, []);
 
+  const handleChange = (e) => {
+      setPaymentMethod(e.target.value)
+  }
+
   const handleClick = async() => {
+    
+
     if (!address) {
       Swal.fire("Vui lòng nhập địa chỉ giao hàng", "", "warning");
       return;
     }
 
-    const resp = await fetch(`${BASE_URL}/order/checkout`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ address })
-    });
-
-    if (resp.status == 200) {
-      Swal.fire("Đặt hàng thành công", "", "success");
-      router.push('/');
-    } else {
-      Swal.fire("Đặt hàng thất bại", "", "error");
+    switch (paymentMethod) {
+      case "COD":
+          const resp = await fetch(`${BASE_URL}/order/checkout`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ address })
+          });
+      
+          if (resp.status == 200) {
+            Swal.fire("Đặt hàng thành công", "", "success");
+            router.push('/');
+          } else {
+            Swal.fire("Đặt hàng thất bại", "", "error");
+          }
+        break;
+      case "ONLINE":
+        
+        const fetchVnpay = await fetch(`${BASE_URL}/payment/vn-pay?amount=123333&backCode=NCb`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          
+        });
+    
+        if (fetchVnpay.status == 200) {
+          const data  = await fetchVnpay.json()
+          console.log(data.paymentUrl)
+          Swal.fire("Đặt hàng thành công", "", "success");
+          window.location.href = data.paymentUrl;
+        } else {
+          Swal.fire("Đặt hàng thất bại", "", "error");
+        }
+        break;
+      default:
+        break;
     }
   };
 
@@ -92,29 +131,49 @@ export default function Checkout() {
           display: 'flex',
           flexDirection: 'column',
           paddingTop: 10,
-          paddingBottom: 10,
+          paddingBottom: 5,
           paddingLeft: 20,
           paddingRight: 20
         }}
       >
-        <Box sx={{ borderBottom: '1px solid #ced4da' }}>
-          <Typography sx={{ fontSize: 18, fontWeight: 600 }}>Thông tin giao hàng</Typography>
-        </Box>
-        <Box display={'flex'} alignItems={'center'}>
-          <Grid item md={3}>
-            <Typography> Địa chỉ: </Typography>
-          </Grid>
-          <Grid item md={9}>
-            <Input 
-              type='text' 
-              placeholder='Địa chỉ' 
-              fullWidth 
-              onChange={(e) => setAddress(e.target.value)}
-              required
+        <Grid item md={12} marginBottom={5}>
+          <Box sx={{ borderBottom: '1px solid #ced4da' }}>
+            <Typography sx={{ fontSize: 18, fontWeight: 600 }}>Thông tin giao hàng</Typography>
+          </Box>
+          <Box display={'flex'} alignItems={'center'}>
+            <Grid item md={3}>
+              <Typography> Địa chỉ: </Typography>
+            </Grid>
+            <Grid item md={9}>
+              <Input 
+                type='text' 
+                placeholder='Địa chỉ' 
+                fullWidth 
+                onChange={(e) => setAddress(e.target.value)}
+                required
+              >
+              </Input>
+            </Grid>
+          </Box>
+        </Grid>
+
+        <Grid item md={3}>
+          <Box>
+            <Typography sx={{ fontSize: 18, fontWeight: 600 }}>Phương thức thanh toán</Typography>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={paymentMethod}
+              onChange={handleChange}
+              label="Age"
             >
-            </Input>
-          </Grid>
-        </Box>
+              <MenuItem value={"COD"}>Thanh toán COD</MenuItem>
+              <MenuItem value={"ONLINE"}>Thanh toán Online</MenuItem>
+            
+            </Select>
+          </Box>
+        </Grid>
+        
       </Grid>
       <Grid
         container
@@ -123,26 +182,13 @@ export default function Checkout() {
           backgroundColor: '#ffffff',
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: 10,
+         
           paddingBottom: 10,
           paddingLeft: 20,
           paddingRight: 20
         }}
       >
-        <Box>
-          <Typography sx={{ fontSize: 18, fontWeight: 600 }}>Phương thức thanh toán</Typography>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-
-            label="Age"
-          >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
-            
-          </Select>
-        </Box>
+       
        
       </Grid>
       <Grid
