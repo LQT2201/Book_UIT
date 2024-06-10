@@ -68,7 +68,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/order/**").permitAll()
                     // User and Admin access
                     .requestMatchers(HttpMethod.GET, 
-                                    "/api/user/profile", 
+                                    "/api/user/**", 
                                     "/api/user/cart", 
                                     "/api/user/order")
                         .hasAnyRole("USER", "ADMIN")
