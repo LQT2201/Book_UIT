@@ -65,6 +65,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST, "/login/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/book/**", "/api/genre/**").permitAll()
                     .requestMatchers(HttpMethod.GET,"/api/payment/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/order/**").permitAll()
                     // User and Admin access
                     .requestMatchers(HttpMethod.GET, 
                                     "/api/user/profile", 
@@ -73,6 +74,8 @@ public class SecurityConfig {
                         .hasAnyRole("USER", "ADMIN")
                     .requestMatchers(HttpMethod.POST, "/api/order/checkout").hasAnyRole("USER", "ADMIN")
                     .requestMatchers("/api/user/cart" ).hasAnyRole("USER", "ADMIN")
+                    .requestMatchers(HttpMethod.POST,"/api/book/**").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.PATCH, "/api/book/**").hasAnyRole("ADMIN")
                     .anyRequest().authenticated()
                         
                     
