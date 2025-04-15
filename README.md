@@ -8,6 +8,9 @@
 -   **Order Placement & Tracking**: Users can place orders and track their deliveries in real-time.
 -   **Admin Panel**: Allows administrators to manage product listings, process orders, and manage customer data.
 -   **Responsive Design**: Ensures an optimal user experience across desktop and mobile devices.
+-   **User Registration & Login**: Users can create an account, log in, and securely manage their profiles for a personalized shopping experience.
+-   **Role-Based Access Control (RBAC)**: Ensures that users and administrators have appropriate access to system functionalities based on their roles. Customers have access to browse and order books, while admins can manage products, orders, and user data.
+
 
 ## Technologies 💻
 
