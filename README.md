@@ -67,10 +67,6 @@
 
 1.  Navigate to the backend directory where the Spring Boot project is located:
 
-    ```bash
-    cd backend
-    ```
-
 2.  Ensure you have Gradle installed. If not, follow the instructions to install it:
 
     *(https://docs.gradle.org/current/userguide/installation.html)*
