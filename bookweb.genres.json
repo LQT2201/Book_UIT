@@ -1,0 +1,38 @@
+[
+  {
+    "_id": {
+      "$oid": "6667225a86a21e7574be74c5"
+    },
+    "name": "Thể Loại Mới",
+    "description": "Thể loại sách mới, đa dạng và hấp dẫn",
+    "_class": "com.is216.bookweb.models.Genre",
+    "images": "https://cdn0.fahasa.com/media/wysiwyg/hieu_kd/2023-08-frame/TLKN.png"
+  },
+  {
+    "_id": {
+      "$oid": "6667226986a21e7574be74c6"
+    },
+    "name": "Văn Học",
+    "description": "Tác phẩm văn học đặc sắc, phong phú về nội dung",
+    "_class": "com.is216.bookweb.models.Genre",
+    "images": "https://cdn0.fahasa.com/media/catalog/product/b/1/b1-1_1_5.jpg"
+  },
+  {
+    "_id": {
+      "$oid": "666749c5ebeee050d691e7ee"
+    },
+    "name": "Sách Giáo Khoa",
+    "description": "Danh sách sách giáo khoa và tài liệu học tập",
+    "_class": "com.is216.bookweb.models.Genre",
+    "images": "https://cdn0.fahasa.com/media/wysiwyg/tuan-test-css/thuong-resize.jpg"
+  },
+  {
+    "_id": {
+      "$oid": "6667aefab7b828010bbc1b13"
+    },
+    "name": "Kinh Dị",
+    "description": "Sách kinh dị, hồi hộp và đầy kịch tính",
+    "_class": "com.is216.bookweb.models.Genre",
+    "images": "https://cdn0.fahasa.com/media/catalog/product/8/9/8936225390010.jpg"
+  }
+]

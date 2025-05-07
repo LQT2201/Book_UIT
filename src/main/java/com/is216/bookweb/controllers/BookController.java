@@ -38,6 +38,20 @@ public class BookController {
     public List<Book> getAllBooks() {
         return bookService.getAllBooks();
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchBooks(
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "genre", required = false) List<String> genres,
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "by", required = false) String by) {
+        try {
+            List<Book> books = bookService.searchBooks(keyword, genres, sort, by);
+            return new ResponseEntity<>(books, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     
     @GetMapping("/{id}")
     public ResponseEntity<?> getBookById(@PathVariable("id") String id) {
@@ -79,19 +93,34 @@ public class BookController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> updateBook(@PathVariable("id") String id,  
-            @RequestParam(value = "title")  String title,
-            @RequestParam("author")  String author,
-            @RequestParam("genre")  String genre,
-            @RequestParam("description")  String description,
-            @RequestParam("stock")  Integer stock,
-            @RequestParam("price")  BigDecimal price,
-            @RequestParam("salePrice")  BigDecimal salePrice,
-            @RequestParam("publisher")  String publisher,
-            @RequestParam(value = "images", required = false) List<MultipartFile> images){
-        ResponseData responseData = new ResponseData();
-        responseData.setData(bookService.updateBook(id, title, author, genre, description, stock, price, salePrice, publisher,images));
+    public ResponseEntity<?> updateBook(
+        @PathVariable("id") String id,
+        @RequestParam(value = "title", required = true) String title,
+        @RequestParam(value = "author", required = true) String author,
+        @RequestParam(value = "genre", required = true) String genre,
+        @RequestParam(value = "description", required = true) String description,
+        @RequestParam(value = "stock", required = true) Integer stock,
+        @RequestParam(value = "price", required = true) BigDecimal price,
+        @RequestParam(value = "salePrice", required = true) BigDecimal salePrice,
+        @RequestParam(value = "publisher", required = true) String publisher,
+        @RequestParam(value = "images", required = false) List<MultipartFile> images) {
         
-        return new ResponseEntity<>(responseData, HttpStatus.OK);
+        ResponseData responseData = new ResponseData();
+        try {
+            boolean success = bookService.updateBook(id, title, author, genre, description, stock, price, salePrice, publisher, images);
+            if (success) {
+                responseData.setData(true);
+                responseData.setMessage("Cập nhật sách thành công");
+                return new ResponseEntity<>(responseData, HttpStatus.OK);
+            } else {
+                responseData.setData(false);
+                responseData.setMessage("Cập nhật sách thất bại");
+                return new ResponseEntity<>(responseData, HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            responseData.setData(false);
+            responseData.setMessage("Lỗi: " + e.getMessage());
+            return new ResponseEntity<>(responseData, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

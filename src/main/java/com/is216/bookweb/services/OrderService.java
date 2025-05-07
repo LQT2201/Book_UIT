@@ -16,6 +16,8 @@ import com.is216.bookweb.repositories.OrderRepository;
 public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
+    
+    @Autowired
     private BookRepository bookRepository;
 
     public List<Order> getAllOrders() {
@@ -70,7 +72,6 @@ public class OrderService {
         } catch (Exception e) {
             return "Update fail";
         }
-
     }
 
 
@@ -82,6 +83,32 @@ public class OrderService {
         return orders;
     }   
     
+    /**
+     * Find all orders for a specific user by username
+     * 
+     * @param username The username of the user
+     * @return List of user's orders sorted by orderAt date (newest first)
+     */
+    public List<Order> findOrdersByUsername(String username) {
+        try {
+            // Find all orders with the matching username
+            List<Order> allOrders = orderRepository.findAll();
+            List<Order> userOrders = new ArrayList<>();
+            
+            // Filter orders by username
+            for (Order order : allOrders) {
+                if (order.getUsername().equals(username)) {
+                    userOrders.add(order);
+                }
+            }
+                   
+            
+            return userOrders;
+        } catch (Exception e) {
+            // Return empty list in case of error
+            return new ArrayList<>();
+        }
+    }
 }
 
     

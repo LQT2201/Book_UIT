@@ -4,6 +4,7 @@ public class ResponseData {
     private int status = 200;
     private boolean success = true;
     private String des;
+    private String message;
     public boolean isSuccess() {
         return success;
     }
@@ -30,5 +31,10 @@ public class ResponseData {
     public void setData(Object data) {
         this.data = data;
     }
-
+    public String getMessage() {
+        return message;
+    }
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

@@ -2,6 +2,7 @@ package com.is216.bookweb.models;
 
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -19,11 +20,12 @@ public class Order {
     String orderStatus;
     List<BoughtInformation> orderItems;
     String shippingAddress;
+    Date orderAt;
 
     public Order() {
         this.totalPrice = new BigDecimal(0);
-
         this.orderStatus = "Đang xử lý";
+        this.orderAt = new Date();
     }
     public Order(String username, List<BoughtInformation> cart, String shippingAddress) {
         this.totalPrice = new BigDecimal(0);
@@ -31,6 +33,7 @@ public class Order {
         this.username = username;
         this.orderItems = cart;
         this.shippingAddress = shippingAddress;
+        this.orderAt = new Date();
     }
     public String getShippingAddress() {
         return shippingAddress;
@@ -74,5 +77,13 @@ public class Order {
 
     public void setOrderItems(List<BoughtInformation> orderItems) {
         this.orderItems = orderItems;
+    }
+    
+    public Date getOrderAt() {
+        return orderAt;
+    }
+    
+    public void setOrderAt(Date orderAt) {
+        this.orderAt = orderAt;
     }
 }

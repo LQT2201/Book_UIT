@@ -1,4 +1,3 @@
-
 package com.is216.bookweb.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.ArrayList;
 
 
 @RestController
@@ -55,21 +56,31 @@ public class LoginController {
         return new ResponseEntity<>(responseData,HttpStatus.OK);
     }
 
-     public ResponseEntity<?> signup(@RequestBody User user) {
+    @PostMapping("/signup")
+    public ResponseEntity<?> signup(@RequestBody User user) {
         if (userRepository.findByUsername(user.getUsername()) != null) {
-            return new ResponseEntity<>(HttpStatusCode.valueOf(400));
+            return new ResponseEntity<>("Username already exists", HttpStatus.BAD_REQUEST);
         }
+
         User registerUser = new User();
         registerUser.setUsername(user.getUsername());
         registerUser.setPassword(passwordEncoder.encode(user.getPassword()));
         registerUser.setRole("ROLE_USER");
-        User savedUser = userRepository.save(registerUser);
+        registerUser.setFullName(user.getFullName());
+        registerUser.setEmail(user.getEmail());
+        registerUser.setPhoneNumber(user.getPhoneNumber());
+        registerUser.setAddress(user.getAddress());
+        registerUser.setCart(new ArrayList<>());
 
-        if (savedUser == null) {
-            return new ResponseEntity<>(HttpStatusCode.valueOf(500));
+        try {
+            User savedUser = userRepository.save(registerUser);
+            if (savedUser == null) {
+                return new ResponseEntity<>("Failed to create user", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error creating user: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<>( HttpStatusCode.valueOf(200));
     }
     
     

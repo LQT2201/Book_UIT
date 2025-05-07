@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import {
   Grid,
   Card,
@@ -15,56 +15,17 @@ import {
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
 
-const UpdateUser = () => {
+const AddUser = () => {
   const router = useRouter()
-  const { id } = router.query
-  const [loading, setLoading] = useState(true)
   const [formData, setFormData] = useState({
     username: '',
+    password: '',
     fullName: '',
     email: '',
     phoneNumber: '',
     address: '',
-    role: ''
+    role: 'USER'
   })
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      if (!id) return
-
-      const token = localStorage.getItem('token')
-      try {
-        const response = await fetch(`http://127.0.0.1:8080/api/user/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-
-        if (response.ok) {
-          const userData = await response.json()
-          setFormData({
-            username: userData.username || '',
-            fullName: userData.fullName || '',
-            email: userData.email || '',
-            phoneNumber: userData.phoneNumber || '',
-            address: userData.address || '',
-            role: userData.role || 'USER'
-          })
-        } else {
-          Swal.fire('Lỗi', 'Không thể tải thông tin người dùng', 'error')
-          router.push('/admin/users')
-        }
-      } catch (error) {
-        console.error('Error fetching user:', error)
-        Swal.fire('Lỗi', 'Đã xảy ra lỗi khi tải thông tin người dùng', 'error')
-        router.push('/admin/users')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchUser()
-  }, [id, router])
 
   const handleChange = e => {
     const { name, value } = e.target
@@ -79,8 +40,8 @@ const UpdateUser = () => {
     const token = localStorage.getItem('token')
 
     try {
-      const response = await fetch(`http://127.0.0.1:8080/api/user/${id}`, {
-        method: 'PATCH',
+      const response = await fetch('http://127.0.0.1:8080/api/user', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
@@ -89,27 +50,23 @@ const UpdateUser = () => {
       })
 
       if (response.ok) {
-        Swal.fire('Thành công', 'Cập nhật người dùng thành công', 'success')
+        Swal.fire('Thành công', 'Thêm người dùng thành công', 'success')
         router.push('/admin/users')
       } else {
         const error = await response.json()
-        Swal.fire('Lỗi', error.message || 'Không thể cập nhật người dùng', 'error')
+        Swal.fire('Lỗi', error.message || 'Không thể thêm người dùng', 'error')
       }
     } catch (error) {
-      console.error('Error updating user:', error)
-      Swal.fire('Lỗi', 'Đã xảy ra lỗi khi cập nhật người dùng', 'error')
+      console.error('Error adding user:', error)
+      Swal.fire('Lỗi', 'Đã xảy ra lỗi khi thêm người dùng', 'error')
     }
-  }
-
-  if (loading) {
-    return <Typography>Đang tải...</Typography>
   }
 
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Card>
-          <CardHeader title='Cập nhật thông tin người dùng' />
+          <CardHeader title='Thêm người dùng mới' />
           <CardContent>
             <form onSubmit={handleSubmit}>
               <Grid container spacing={5}>
@@ -121,7 +78,17 @@ const UpdateUser = () => {
                     value={formData.username}
                     onChange={handleChange}
                     required
-                    disabled
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    fullWidth
+                    label='Mật khẩu'
+                    name='password'
+                    type='password'
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -176,7 +143,7 @@ const UpdateUser = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Button type='submit' variant='contained' sx={{ mr: 3 }}>
-                    Cập nhật
+                    Thêm người dùng
                   </Button>
                   <Button variant='outlined' color='secondary' onClick={() => router.push('/admin/users')}>
                     Hủy
@@ -191,4 +158,4 @@ const UpdateUser = () => {
   )
 }
 
-export default UpdateUser
+export default AddUser

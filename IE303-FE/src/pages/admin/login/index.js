@@ -8,8 +8,6 @@ import { useRouter } from 'next/router'
 // ** MUI Components
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import InputLabel from '@mui/material/InputLabel'
 import Typography from '@mui/material/Typography'
@@ -20,13 +18,10 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import { styled, useTheme } from '@mui/material/styles'
 import MuiCard from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
-import MuiFormControlLabel from '@mui/material/FormControlLabel'
+import Alert from '@mui/material/Alert'
+import Snackbar from '@mui/material/Snackbar'
 
 // ** Icons Imports
-import Google from 'mdi-material-ui/Google'
-import Github from 'mdi-material-ui/Github'
-import Twitter from 'mdi-material-ui/Twitter'
-import Facebook from 'mdi-material-ui/Facebook'
 import EyeOutline from 'mdi-material-ui/EyeOutline'
 import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
 
@@ -38,11 +33,6 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import { Rss } from 'mdi-material-ui'
-import { Token } from '@mui/icons-material'
-
-// ** Import Sweetalert2
-import Swal from 'sweetalert2'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -55,33 +45,15 @@ const LinkStyled = styled('a')(({ theme }) => ({
   color: theme.palette.primary.main
 }))
 
-const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
-  '& .MuiFormControlLabel-label': {
-    fontSize: '0.875rem',
-    color: theme.palette.text.secondary
-  }
-}))
-
-// ** Toast notification function
-const Toast = Swal.mixin({
-  toast: true,
-  position: 'top-end',
-  showConfirmButton: false,
-  timer: 3000,
-  timerProgressBar: true,
-  didOpen: toast => {
-    toast.addEventListener('mouseenter', Swal.stopTimer)
-    toast.addEventListener('mouseleave', Swal.resumeTimer)
-  }
-})
-
-const LoginPage = () => {
+const AdminLoginPage = () => {
   // ** State
   const [values, setValues] = useState({
     username: '',
     password: '',
     showPassword: false
   })
+  const [error, setError] = useState('')
+  const [openSnackbar, setOpenSnackbar] = useState(false)
 
   // ** Hook
   const theme = useTheme()
@@ -99,17 +71,20 @@ const LoginPage = () => {
     event.preventDefault()
   }
 
-  const handleClick = async () => {
-    try {
-      // Validate form
-      if (!values.username.trim() || !values.password) {
-        Toast.fire({
-          icon: 'warning',
-          title: 'Vui lòng nhập đầy đủ thông tin đăng nhập'
-        })
-        return
-      }
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false)
+  }
 
+  const handleSubmit = async e => {
+    e.preventDefault()
+
+    if (!values.username || !values.password) {
+      setError('Vui lòng nhập đầy đủ thông tin')
+      setOpenSnackbar(true)
+      return
+    }
+
+    try {
       const formData = new FormData()
       formData.append('username', values.username)
       formData.append('password', values.password)
@@ -120,36 +95,26 @@ const LoginPage = () => {
       })
 
       if (!response.ok) {
-        throw new Error('Network response was not ok ' + response.statusText)
+        throw new Error('Đăng nhập thất bại')
       }
 
       const resp = await response.json()
 
-      if (!resp.success) {
-        Toast.fire({
-          icon: 'error',
-          title: 'Tên đăng nhập hoặc mật khẩu không đúng'
-        })
-        return
-      }
+      //   // Check if user has admin role
+      //   if (!resp.isAdmin) {
+      //     setError('Tài khoản không có quyền admin')
+      //     setOpenSnackbar(true)
+      //     return
+      //   }
 
-      localStorage.setItem('token', resp.data)
+      localStorage.setItem('adminToken', resp.data)
+      localStorage.setItem('isAdmin', 'true')
 
-      Toast.fire({
-        icon: 'success',
-        title: 'Đăng nhập thành công'
-      })
-
-      // Redirect after toast notification
-      setTimeout(() => {
-        router.push('/')
-      }, 1500)
+      router.push('/admin/orders')
     } catch (error) {
       console.error('Đăng nhập thất bại:', error)
-      Toast.fire({
-        icon: 'error',
-        title: 'Đăng nhập thất bại'
-      })
+      setError('Đăng nhập thất bại, vui lòng kiểm tra lại thông tin')
+      setOpenSnackbar(true)
     }
   }
 
@@ -227,10 +192,16 @@ const LoginPage = () => {
                 fontSize: '1.5rem !important'
               }}
             >
-              {themeConfig.templateName}
+              {themeConfig.templateName} - Admin
             </Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
+          <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5, textAlign: 'center' }}>
+            Đăng nhập Admin
+          </Typography>
+          <Typography variant='body2' sx={{ marginBottom: 5, textAlign: 'center' }}>
+            Vui lòng đăng nhập với tài khoản Admin
+          </Typography>
+          <form noValidate autoComplete='off' onSubmit={handleSubmit}>
             <TextField
               autoFocus
               fullWidth
@@ -242,7 +213,7 @@ const LoginPage = () => {
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Mật khẩu</InputLabel>
               <OutlinedInput
-                label='Password'
+                label='Mật khẩu'
                 value={values.password}
                 id='auth-login-password'
                 onChange={handleChange('password')}
@@ -261,26 +232,27 @@ const LoginPage = () => {
                 }
               />
             </FormControl>
-            <Box
-              sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
-            ></Box>
-            <Button fullWidth size='large' variant='contained' sx={{ marginBottom: 7 }} onClick={() => handleClick()}>
-              Đăng nhập
-            </Button>
-            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <Typography variant='body2'>
-                <Link passHref href='/pages/register'>
-                  <LinkStyled>Đăng ký</LinkStyled>
-                </Link>
-              </Typography>
+            <Box sx={{ mt: 4 }}>
+              <Button fullWidth size='large' variant='contained' sx={{ marginBottom: 2 }} type='submit'>
+                Đăng nhập
+              </Button>
+              <Button fullWidth size='large' variant='outlined' onClick={() => router.push('/')}>
+                Quay lại trang chủ
+              </Button>
             </Box>
           </form>
         </CardContent>
       </Card>
       <FooterIllustrationsV1 />
+      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity='error' sx={{ width: '100%' }}>
+          {error}
+        </Alert>
+      </Snackbar>
     </Box>
   )
 }
-LoginPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
 
-export default LoginPage
+AdminLoginPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
+
+export default AdminLoginPage

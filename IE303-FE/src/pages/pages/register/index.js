@@ -3,6 +3,7 @@ import { useState, Fragment } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 // ** MUI Components
 import Box from '@mui/material/Box'
@@ -20,6 +21,7 @@ import { styled, useTheme } from '@mui/material/styles'
 import MuiCard from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
+import FormHelperText from '@mui/material/FormHelperText'
 
 // ** Icons Imports
 import Google from 'mdi-material-ui/Google'
@@ -37,6 +39,9 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
+
+// ** Import Sweetalert2
+import Swal from 'sweetalert2'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -58,26 +63,150 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
   }
 }))
 
+// ** Toast notification function
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: toast => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
+
 const RegisterPage = () => {
   // ** States
   const [values, setValues] = useState({
+    username: '',
     password: '',
-    showPassword: false
+    confirmPassword: '',
+    showPassword: false,
+    showConfirmPassword: false,
+    terms: false
+  })
+
+  const [errors, setErrors] = useState({
+    username: '',
+    password: '',
+    confirmPassword: '',
+    terms: ''
   })
 
   // ** Hook
   const theme = useTheme()
+  const router = useRouter()
 
   const handleChange = prop => event => {
-    setValues({ ...values, [prop]: event.target.value })
+    const value = prop === 'terms' ? event.target.checked : event.target.value
+    setValues({ ...values, [prop]: value })
+
+    // Clear error when user starts typing
+    if (errors[prop]) {
+      setErrors({ ...errors, [prop]: '' })
+    }
   }
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword })
   }
 
+  const handleClickShowConfirmPassword = () => {
+    setValues({ ...values, showConfirmPassword: !values.showConfirmPassword })
+  }
+
   const handleMouseDownPassword = event => {
     event.preventDefault()
+  }
+
+  const validateForm = () => {
+    let isValid = true
+    const newErrors = { ...errors }
+
+    // Validate username
+    if (!values.username.trim()) {
+      newErrors.username = 'Tên đăng nhập không được để trống'
+      isValid = false
+    }
+
+    // Validate password
+    if (!values.password) {
+      newErrors.password = 'Mật khẩu không được để trống'
+      isValid = false
+    } else if (values.password.length < 6) {
+      newErrors.password = 'Mật khẩu phải có ít nhất 6 ký tự'
+      isValid = false
+    }
+
+    // Validate confirm password
+    if (!values.confirmPassword) {
+      newErrors.confirmPassword = 'Vui lòng xác nhận mật khẩu'
+      isValid = false
+    } else if (values.confirmPassword !== values.password) {
+      newErrors.confirmPassword = 'Mật khẩu xác nhận không khớp'
+      isValid = false
+    }
+
+    // Validate terms
+    if (!values.terms) {
+      newErrors.terms = 'Bạn phải đồng ý với điều khoản dịch vụ'
+      isValid = false
+    }
+
+    setErrors(newErrors)
+    return isValid
+  }
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+
+    if (validateForm()) {
+      try {
+        const userData = {
+          username: values.username,
+          password: values.password
+        }
+
+        console.log(userData)
+
+        const response = await fetch('http://localhost:8080/login/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        })
+
+        if (!response.ok) {
+          if (response.status === 400) {
+            Toast.fire({
+              icon: 'error',
+              title: 'Tên đăng nhập đã tồn tại'
+            })
+          } else {
+            throw new Error('Đăng ký thất bại - ' + response.status)
+          }
+          return
+        }
+
+        Toast.fire({
+          icon: 'success',
+          title: 'Đăng ký thành công'
+        })
+
+        // Redirect after successful registration and toast notification
+        setTimeout(() => {
+          router.push('/pages/login')
+        }, 1500)
+      } catch (error) {
+        console.error('Đăng ký thất bại:', error)
+        Toast.fire({
+          icon: 'error',
+          title: 'Đăng ký thất bại: ' + error.message
+        })
+      }
+    }
   }
 
   return (
@@ -162,12 +291,23 @@ const RegisterPage = () => {
               ĐĂNG KÝ TÀI KHOẢN
             </Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='username' label='Username' sx={{ marginBottom: 4 }} />
-            <FormControl fullWidth>
-              <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
+          <form noValidate autoComplete='off' onSubmit={handleSubmit}>
+            <TextField
+              autoFocus
+              fullWidth
+              id='username'
+              label='Tên đăng nhập'
+              value={values.username}
+              onChange={handleChange('username')}
+              error={Boolean(errors.username)}
+              helperText={errors.username}
+              sx={{ marginBottom: 4 }}
+            />
+
+            <FormControl fullWidth sx={{ marginBottom: 4 }} error={Boolean(errors.password)}>
+              <InputLabel htmlFor='auth-register-password'>Mật khẩu</InputLabel>
               <OutlinedInput
-                label='Password'
+                label='Mật khẩu'
                 value={values.password}
                 id='auth-register-password'
                 onChange={handleChange('password')}
@@ -185,9 +325,46 @@ const RegisterPage = () => {
                   </InputAdornment>
                 }
               />
+              {errors.password && <FormHelperText>{errors.password}</FormHelperText>}
             </FormControl>
 
-            <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7, marginTop: 7 }}>
+            <FormControl fullWidth sx={{ marginBottom: 4 }} error={Boolean(errors.confirmPassword)}>
+              <InputLabel htmlFor='auth-register-confirm-password'>Xác nhận mật khẩu</InputLabel>
+              <OutlinedInput
+                label='Xác nhận mật khẩu'
+                value={values.confirmPassword}
+                id='auth-register-confirm-password'
+                onChange={handleChange('confirmPassword')}
+                type={values.showConfirmPassword ? 'text' : 'password'}
+                endAdornment={
+                  <InputAdornment position='end'>
+                    <IconButton
+                      edge='end'
+                      onClick={handleClickShowConfirmPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      aria-label='toggle password visibility'
+                    >
+                      {values.showConfirmPassword ? (
+                        <EyeOutline fontSize='small' />
+                      ) : (
+                        <EyeOffOutline fontSize='small' />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              {errors.confirmPassword && <FormHelperText>{errors.confirmPassword}</FormHelperText>}
+            </FormControl>
+
+            <FormControl error={Boolean(errors.terms)}>
+              <FormControlLabel
+                control={<Checkbox checked={values.terms} onChange={handleChange('terms')} />}
+                label='Tôi đồng ý với các điều khoản dịch vụ'
+              />
+              {errors.terms && <FormHelperText>{errors.terms}</FormHelperText>}
+            </FormControl>
+
+            <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7, marginTop: 4 }}>
               Đăng ký
             </Button>
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -200,7 +377,7 @@ const RegisterPage = () => {
                 </Link>
               </Typography>
             </Box>
-            <Divider sx={{ my: 5 }}>or</Divider>
+            <Divider sx={{ my: 5 }}>hoặc</Divider>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Link href='/' passHref>
                 <IconButton component='a' onClick={e => e.preventDefault()}>

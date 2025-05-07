@@ -20,31 +20,25 @@ const navigation = () => {
       path: '/dashboard'
     },
     {
-      title:"Sách",
-      icon:Book,
-      path:"/admin/books"
+      title: 'Sách',
+      icon: Book,
+      path: '/admin/books'
     },
     {
-      title:"Thể loại",
-      icon:Category,
-      path:"/admin/genres"
+      title: 'Thể loại',
+      icon: Category,
+      path: '/admin/genres'
     },
     {
-      title:"Tác giả",
-      icon: NaturePeople,
-      path:"/admin/authors"
+      title: 'Đơn hàng',
+      icon: Book,
+      path: '/admin/orders'
     },
     {
-      title:"Đơn hàng",
-      icon:Book,
-      path:"/admin/orders"
-    },
-    {
-      title:"Tài khoản",
-      icon:Book,
-      path:"/admin/users"
-    },
-    
+      title: 'Tài khoản',
+      icon: Book,
+      path: '/admin/users'
+    }
   ]
 }
 

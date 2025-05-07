@@ -66,5 +66,12 @@ public class GenreService {
         return genres;
     }
 
+    public Genre getGenreById(String id) {
+        try {
+            return genreRepository.findById(id).get();
+        } catch (Exception e) {
+            return null;
+        }
+    }
     
 }

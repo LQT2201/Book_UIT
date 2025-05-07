@@ -1,0 +1,163 @@
+[
+  {
+    "_id": {
+      "$oid": "6666cd47c0b6083a0b69c5b1"
+    },
+    "title": "Hành Trình Mới",
+    "author": "B Ray",
+    "genre": {
+      "$ref": "genres",
+      "$id": {
+        "$oid": "6667226986a21e7574be74c6"
+      }
+    },
+    "description": "Một câu chuyện truyền cảm hứng về hành trình khám phá bản thân và theo đuổi đam mê của giới trẻ.",
+    "stock": 10,
+    "soldQty": 0,
+    "images": [
+      "http://res.cloudinary.com/dgtac4atn/image/upload/v1718013255/qy5txvcxigmvrhwfhydg.png"
+    ],
+    "price": "10000",
+    "salePrice": "20000",
+    "_class": "com.is216.bookweb.models.Book"
+  },
+  {
+    "_id": {
+      "$oid": "6666ce73ec30aa7d2454b975"
+    },
+    "title": "Nhà Giả Kim",
+    "author": "Paulo Coelho",
+    "genre": {
+      "$ref": "genres",
+      "$id": {
+        "$oid": "6667226986a21e7574be74c6"
+      }
+    },
+    "description": "Tác phẩm kinh điển kể về hành trình theo đuổi giấc mơ của Santiago, truyền tải thông điệp sâu sắc về ý nghĩa cuộc sống.",
+    "stock": 10,
+    "soldQty": 0,
+    "images": [
+      "http://c3nguyenchithanh.daknong.edu.vn/wp-content/uploads/2020/04/nhung-cuon-sach-hay-nen-doc-mot-lan-trong-doi-3724-2.jpg"
+    ],
+    "price": {
+      "$numberDecimal": "10000"
+    },
+    "salePrice": {
+      "$numberDecimal": "20000"
+    },
+    "_class": "com.is216.bookweb.models.Book"
+  },
+  {
+    "_id": {
+      "$oid": "6667af40b7b828010bbc1b14"
+    },
+    "title": "Trở Lại Hoang Thôn",
+    "author": "Sái Tuấn",
+    "genre": {
+      "$ref": "genres",
+      "$id": {
+        "$oid": "6667aefab7b828010bbc1b13"
+      }
+    },
+    "description": "Một cuốn tiểu thuyết kinh dị đầy ám ảnh, kể về những bí ẩn và nỗi sợ hãi tại một ngôi làng hoang vắng.",
+    "stock": 12,
+    "soldQty": 0,
+    "images": [
+      "https://salt.tikicdn.com/cache/750x750/media/catalog/product/t/r/tro-lai-hoang-thon_1.jpg.webp"
+    ],
+    "price": {
+      "$numberDecimal": "35000"
+    },
+    "salePrice": {
+      "$numberDecimal": "10000"
+    },
+    "publisher": "Truyện Ma",
+    "_class": "com.is216.bookweb.models.Book"
+  },
+  {
+    "_id": {
+      "$oid": "6667afe8b7b828010bbc1b15"
+    },
+    "title": "Sách Giáo Khoa Lớp 10 - Bộ Cơ Bản",
+    "author": "Nhà Xuất Bản Kim Đồng",
+    "genre": {
+      "$ref": "genres",
+      "$id": {
+        "$oid": "666749c5ebeee050d691e7ee"
+      }
+    },
+    "description": "Bộ sách giáo khoa chính thống dành cho học sinh lớp 10, bao gồm các môn học cơ bản theo chương trình giáo dục hiện hành.",
+    "stock": 15,
+    "soldQty": 0,
+    "images": [
+      "https://file.qdnd.vn/data/images/0/2021/04/08/dieuthuy/84t1.jpg?dpi=150&quality=100&w=575"
+    ],
+    "price": {
+      "$numberDecimal": "20000"
+    },
+    "salePrice": {
+      "$numberDecimal": "10000"
+    },
+    "publisher": "Kim Đồng",
+    "_class": "com.is216.bookweb.models.Book"
+  },
+  {
+    "_id": {
+      "$oid": "6667b029b7b828010bbc1b16"
+    },
+    "title": "Những Câu Chuyện Hài Hước",
+    "author": "Nhà Xuất Bản Kim Đồng",
+    "genre": {
+      "$ref": "genres",
+      "$id": {
+        "$oid": "6667225a86a21e7574be74c5"
+      }
+    },
+    "description": "Tập hợp những câu chuyện hài hước, dí dỏm, mang lại tiếng cười sảng khoái và những phút giây thư giãn cho độc giả mọi lứa tuổi.",
+    "stock": 20,
+    "soldQty": 0,
+    "images": [
+      "https://salt.tikicdn.com/cache/750x750/ts/product/7f/9a/63/4a0aee6548dfa4f7ae9f95c1c46b983c.jpg.webp",
+      "https://salt.tikicdn.com/cache/750x750/ts/product/97/bc/ae/7fe8a253cce6da248aebe6679bb9c88f.jpg.webp",
+      "https://salt.tikicdn.com/cache/750x750/ts/product/9e/b0/08/e68f4a7644ce9566469e1d02ba6d387e.jpg.webp",
+      "https://salt.tikicdn.com/cache/750x750/ts/product/73/32/2f/3e7c997b212dbb9639adf1a4b12a7cff.jpg.webp"
+    ],
+    "price": {
+      "$numberDecimal": "25000"
+    },
+    "salePrice": {
+      "$numberDecimal": "5000"
+    },
+    "publisher": "Kim Đồng",
+    "_class": "com.is216.bookweb.models.Book"
+  },
+  {
+    "_id": {
+      "$oid": "6667b0c0b7b828010bbc1b17"
+    },
+    "title": "Thơ Xuân Diệu - Tuyển Tập",
+    "author": "Xuân Diệu",
+    "genre": {
+      "$ref": "genres",
+      "$id": {
+        "$oid": "6667226986a21e7574be74c6"
+      }
+    },
+    "description": "Tuyển tập những bài thơ trữ tình đặc sắc của Xuân Diệu, ông hoàng thơ tình Việt Nam, ngợi ca tình yêu và vẻ đẹp cuộc sống.",
+    "stock": 10,
+    "soldQty": 0,
+    "images": [
+      "https://cdn1.fahasa.com/media/catalog/product/h/h/hh_bia_tho-xuan-dieu_b1.jpg",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-ls7xuz90j16s3d.webp",
+      "https://product.hstatic.net/200000017360/product/hh-tho-xuandieu_78b5d163b4d74cdb9ba6105acd182f4c_master.jpg"
+    ],
+    "price": {
+      "$numberDecimal": "40000"
+    },
+    "salePrice": {
+      "$numberDecimal": "20000"
+    },
+    "publisher": "Xuân Diệu",
+    "_class": "com.is216.bookweb.models.Book"
+  }
+]

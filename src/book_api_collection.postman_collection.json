@@ -1,0 +1,696 @@
+{
+  "info": {
+    "_postman_id": "a0b1c2d3-e4f5-6789-abcd-ef0123456789",
+    "name": "Book_UIT API Collection",
+    "description": "API collection for Book_UIT application (All endpoints are publicly accessible)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Book",
+      "item": [
+        {
+          "name": "Get All Books",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/book",
+              "host": ["{{base_url}}"],
+              "path": ["api", "book"]
+            },
+            "description": "Fetches all books from the system"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Book By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/book/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "book", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Book ID"
+                }
+              ]
+            },
+            "description": "Fetches a specific book by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Book",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Book Title",
+                  "type": "text"
+                },
+                {
+                  "key": "author",
+                  "value": "Author Name",
+                  "type": "text"
+                },
+                {
+                  "key": "genre",
+                  "value": "Genre ID",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Book description",
+                  "type": "text"
+                },
+                {
+                  "key": "stock",
+                  "value": "10",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "100000",
+                  "type": "text"
+                },
+                {
+                  "key": "salePrice",
+                  "value": "90000",
+                  "type": "text"
+                },
+                {
+                  "key": "publisher",
+                  "value": "Publisher Name",
+                  "type": "text"
+                },
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/book",
+              "host": ["{{base_url}}"],
+              "path": ["api", "book"]
+            },
+            "description": "Creates a new book"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Book",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/book/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "book", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Book ID"
+                }
+              ]
+            },
+            "description": "Deletes a book by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Book",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Updated Book Title",
+                  "type": "text"
+                },
+                {
+                  "key": "author",
+                  "value": "Updated Author Name",
+                  "type": "text"
+                },
+                {
+                  "key": "genre",
+                  "value": "Updated Genre ID",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Updated Book description",
+                  "type": "text"
+                },
+                {
+                  "key": "stock",
+                  "value": "20",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "120000",
+                  "type": "text"
+                },
+                {
+                  "key": "salePrice",
+                  "value": "110000",
+                  "type": "text"
+                },
+                {
+                  "key": "publisher",
+                  "value": "Updated Publisher Name",
+                  "type": "text"
+                },
+                {
+                  "key": "images",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/book/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "book", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Book ID"
+                }
+              ]
+            },
+            "description": "Updates a book's information"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/user",
+              "host": ["{{base_url}}"],
+              "path": ["api", "user"]
+            },
+            "description": "Fetches all users"
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Cart",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/user/cart",
+              "host": ["{{base_url}}"],
+              "path": ["api", "user", "cart"]
+            },
+            "description": "Get the current user's cart"
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n    {\n        \"itemId\": \"book-id-here\",\n        \"quantity\": 1\n    }\n]"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/user/cart",
+              "host": ["{{base_url}}"],
+              "path": ["api", "user", "cart"]
+            },
+            "description": "Updates the user's cart"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Order",
+      "item": [
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/order",
+              "host": ["{{base_url}}"],
+              "path": ["api", "order"]
+            },
+            "description": "Fetches all orders"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Order By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/order/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "order", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Order ID"
+                }
+              ]
+            },
+            "description": "Fetches an order by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"username\",\n    \"items\": [],\n    \"status\": \"PENDING\",\n    \"shippingAddress\": \"Shipping address\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/order",
+              "host": ["{{base_url}}"],
+              "path": ["api", "order"]
+            },
+            "description": "Creates a new order"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Order",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/order/delete/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "order", "delete", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Order ID"
+                }
+              ]
+            },
+            "description": "Deletes an order"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\"COMPLETED\""
+            },
+            "url": {
+              "raw": "{{base_url}}/api/order/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "order", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Order ID"
+                }
+              ]
+            },
+            "description": "Updates an order's status"
+          },
+          "response": []
+        },
+        {
+          "name": "Checkout Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\"Shipping address here\""
+            },
+            "url": {
+              "raw": "{{base_url}}/api/order/checkout",
+              "host": ["{{base_url}}"],
+              "path": ["api", "order", "checkout"]
+            },
+            "description": "Creates a checkout order from the user's cart"
+          },
+          "response": []
+        },
+        {
+          "name": "VN Pay Checkout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\"payment info\""
+            },
+            "url": {
+              "raw": "{{base_url}}/api/order/checkout/vn-pay",
+              "host": ["{{base_url}}"],
+              "path": ["api", "order", "checkout", "vn-pay"]
+            },
+            "description": "Creates VN Pay order"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Genre",
+      "item": [
+        {
+          "name": "Get All Genres",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/genre",
+              "host": ["{{base_url}}"],
+              "path": ["api", "genre"]
+            },
+            "description": "Fetches all genres"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Genre By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/genre/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "genre", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Genre ID"
+                }
+              ]
+            },
+            "description": "Fetches a genre by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Genre",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Genre Name\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/genre",
+              "host": ["{{base_url}}"],
+              "path": ["api", "genre"]
+            },
+            "description": "Creates a new genre"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Genre",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/genre/delete/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "genre", "delete", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Genre ID"
+                }
+              ]
+            },
+            "description": "Deletes a genre by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Genre",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Updated Genre Name\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/genre/:id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "genre", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Genre ID"
+                }
+              ]
+            },
+            "description": "Updates a genre's information"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Payment",
+      "item": [
+        {
+          "name": "VN Pay Payment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"username\",\n    \"items\": [],\n    \"status\": \"PENDING\",\n    \"shippingAddress\": \"Shipping address\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/payment/vn-pay",
+              "host": ["{{base_url}}"],
+              "path": ["api", "payment", "vn-pay"]
+            },
+            "description": "Create a VN Pay payment for an order"
+          },
+          "response": []
+        },
+        {
+          "name": "VN Pay Callback",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/payment/vn-pay-callback",
+              "host": ["{{base_url}}"],
+              "path": ["api", "payment", "vn-pay-callback"]
+            },
+            "description": "VN Pay payment callback handler"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Upload",
+      "item": [
+        {
+          "name": "Upload Image",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/upload",
+              "host": ["{{base_url}}"],
+              "path": ["upload"]
+            },
+            "description": "Upload an image to Cloudinary"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "username",
+                  "value": "yourusername",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "yourpassword",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/login/signin",
+              "host": ["{{base_url}}"],
+              "path": ["login", "signin"]
+            },
+            "description": "Login to get JWT token (Optional - All endpoints are accessible without authentication)"
+          },
+          "response": []
+        },
+        {
+          "name": "Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"newusername\",\n    \"password\": \"newpassword\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/login/signup",
+              "host": ["{{base_url}}"],
+              "path": ["login", "signup"]
+            },
+            "description": "Register a new user account"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ]
+}
