@@ -52,11 +52,8 @@ const App = props => {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>{`Sách UIT`}</title>
-        <meta
-          name='description'
-          content={`Dẫn đầu xu thế sách`}
-        />
+        <title>{`Sách EPU`}</title>
+        <meta name='description' content={`Dẫn đầu xu thế sách`} />
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
 

@@ -3,7 +3,7 @@ import { Grid, Box, Typography, CardMedia, Link, Container } from '@mui/material
 
 const Footer = () => {
   return (
-    <Box marginTop={10} sx={{borderTop:5, borderColor:"C92127"}} >
+    <Box marginTop={10} sx={{ borderTop: 5, borderColor: 'C92127' }}>
       <Grid
         container
         spacing={2}
@@ -12,7 +12,7 @@ const Footer = () => {
           display: 'flex',
           justifyContent: 'center',
           padding: 5,
-          paddingX: 0,
+          paddingX: 0
         }}
       >
         <Grid item md={3}>
@@ -50,7 +50,7 @@ const Footer = () => {
                 marginTop: 1
               }}
             >
-              Email: 21522461@gm.uit.edu.vn
+              Email: 21522461@gm.EPU.edu.vn
             </Typography>
           </Box>
           <Box>
@@ -167,7 +167,7 @@ const Footer = () => {
               marginBottom: 2
             }}
           >
-            Sách UIT - Hệ thống website bán sách
+            Sách EPU - Hệ thống website bán sách
           </Typography>
           <Box display={'flex'}>
             <Grid item md={6} sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -238,7 +238,7 @@ const Footer = () => {
         </Grid>
       </Grid>
       <Box bgcolor={'#C92127'} justifyContent={'center'} textAlign={'center'} height={50} alignContent={'center'}>
-        <Typography sx={{ color: '#ffffff' }}>Copyright © 2024 | Bản quyền thuộc về Sách UIT</Typography>
+        <Typography sx={{ color: '#ffffff' }}>Copyright © 2024 | Bản quyền thuộc về Sách EPU</Typography>
       </Box>
     </Box>
   )

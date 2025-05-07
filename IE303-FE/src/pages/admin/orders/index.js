@@ -295,9 +295,9 @@ const Orders = () => {
                             size='small'
                           />
                         </Typography>
-                        <Typography>
+                        {/* <Typography>
                           <strong>Địa chỉ giao hàng:</strong> {selectedOrder.shippingAddress}
-                        </Typography>
+                        </Typography> */}
                         <Typography>
                           <strong>Tổng tiền:</strong>{' '}
                           {new Intl.NumberFormat('vi-VN', {

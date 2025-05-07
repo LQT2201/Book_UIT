@@ -1,8 +1,8 @@
 {
   "info": {
     "_postman_id": "a0b1c2d3-e4f5-6789-abcd-ef0123456789",
-    "name": "Book_UIT API Collection",
-    "description": "API collection for Book_UIT application (All endpoints are publicly accessible)",
+    "name": "Book_EPU API Collection",
+    "description": "API collection for Book_EPU application (All endpoints are publicly accessible)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [

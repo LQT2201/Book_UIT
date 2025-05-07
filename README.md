@@ -4,39 +4,38 @@
 
 ## Main Functionalities 🚀
 
--   **Book Browsing & Search**: Customers can easily browse different book categories and search for specific titles.
--   **Order Placement & Tracking**: Users can place orders and track their deliveries in real-time.
--   **Admin Panel**: Allows administrators to manage product listings, process orders, and manage customer data.
--   **Responsive Design**: Ensures an optimal user experience across desktop and mobile devices.
--   **User Registration & Login**: Users can create an account, log in, and securely manage their profiles for a personalized shopping experience.
--   **Role-Based Access Control (RBAC)**: Ensures that users and administrators have appropriate access to system functionalities based on their roles. Customers have access to browse and order books, while admins can manage products, orders, and user data.
-
+- **Book Browsing & Search**: Customers can easily browse different book categories and search for specific titles.
+- **Order Placement & Tracking**: Users can place orders and track their deliveries in real-time.
+- **Admin Panel**: Allows administrators to manage product listings, process orders, and manage customer data.
+- **Responsive Design**: Ensures an optimal user experience across desktop and mobile devices.
+- **User Registration & Login**: Users can create an account, log in, and securely manage their profiles for a personalized shopping experience.
+- **Role-Based Access Control (RBAC)**: Ensures that users and administrators have appropriate access to system functionalities based on their roles. Customers have access to browse and order books, while admins can manage products, orders, and user data.
 
 ## Technologies 💻
 
--   **Frontend**:
+- **Frontend**:
 
-    -   Next.js
-    -   Material-UI (MUI)
+  - Next.js
+  - Material-UI (MUI)
 
--   **Backend**:
+- **Backend**:
 
-    -   Spring Boot (Gradle)
+  - Spring Boot (Gradle)
 
--   **Database**:
+- **Database**:
 
-    -   MongoDB
+  - MongoDB
 
 ## Setup & Installation ⚙️
 
 ### Prerequisites
 
--   **Node.js**: Make sure Node.js is installed for the frontend.
-    [Install Node.js](https://nodejs.org/)
--   **Java 8 or later**: Required for running Spring Boot backend.
-    [Install Java](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
--   **MongoDB**: A NoSQL database for storing data.
-    [Install MongoDB](https://www.mongodb.com/try/download/community)
+- **Node.js**: Make sure Node.js is installed for the frontend.
+  [Install Node.js](https://nodejs.org/)
+- **Java 8 or later**: Required for running Spring Boot backend.
+  [Install Java](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+- **MongoDB**: A NoSQL database for storing data.
+  [Install MongoDB](https://www.mongodb.com/try/download/community)
 
 ### Frontend Setup
 
@@ -72,7 +71,7 @@
 
 2.  Ensure you have Gradle installed. If not, follow the instructions to install it:
 
-    *(https://docs.gradle.org/current/userguide/installation.html)*
+    _(https://docs.gradle.org/current/userguide/installation.html)_
 
 3.  Build the backend application using Gradle:
 

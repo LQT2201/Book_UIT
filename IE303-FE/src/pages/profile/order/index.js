@@ -214,6 +214,9 @@ const ProfileOrder = () => {
                       <TableCell align='right' sx={{ fontWeight: 'bold' }}>
                         Tổng tiền
                       </TableCell>
+                      <TableCell align='center' sx={{ fontWeight: 'bold' }}>
+                        Hành động
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -259,6 +262,21 @@ const ProfileOrder = () => {
                         </TableCell>
                         <TableCell align='right' sx={{ fontWeight: 'bold', color: '#C92127' }}>
                           {formater.format(order.totalPrice)}
+                        </TableCell>
+                        <TableCell align='center'>
+                          <Link href={`/profile/order/${order.id}`} passHref legacyBehavior>
+                            <Box
+                              component='a'
+                              sx={{
+                                color: '#1976d2',
+                                textDecoration: 'underline',
+                                cursor: 'pointer',
+                                fontWeight: 500
+                              }}
+                            >
+                              Xem chi tiết
+                            </Box>
+                          </Link>
                         </TableCell>
                       </TableRow>
                     ))}

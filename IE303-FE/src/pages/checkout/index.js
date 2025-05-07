@@ -203,13 +203,6 @@ export default function Checkout() {
     try {
       let response
 
-      const orderData = {
-        username: user?.username || '',
-        items: cart,
-        status: 'PENDING',
-        shippingAddress: address
-      }
-
       switch (paymentMethod) {
         case 'COD':
           response = await fetch(`${BASE_URL}/order/checkout`, {
@@ -218,25 +211,31 @@ export default function Checkout() {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`
             },
-            body: JSON.stringify(orderData)
+            body: JSON.stringify(address)
           })
 
           if (response.ok) {
-            Swal.fire('Đặt hàng thành công', '', 'success')
-            router.push('/')
+            const result = await response.json()
+            if (result.success) {
+              Swal.fire('Đặt hàng thành công', '', 'success')
+              router.push('/profile/order')
+            } else {
+              Swal.fire('Đặt hàng thất bại', result.message || '', 'error')
+            }
           } else {
-            Swal.fire('Đặt hàng thất bại', '', 'error')
+            const errorData = await response.json()
+            Swal.fire('Đặt hàng thất bại', errorData.message || '', 'error')
           }
           break
 
         case 'ONLINE':
-          response = await fetch(`${BASE_URL}/payment/vn-pay`, {
+          response = await fetch(`${BASE_URL}/order/checkout/vn-pay`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`
             },
-            body: JSON.stringify(orderData)
+            body: JSON.stringify(address)
           })
 
           if (response.ok) {
@@ -247,7 +246,8 @@ export default function Checkout() {
               Swal.fire('Tạo thanh toán thất bại', 'Không thể tạo URL thanh toán', 'error')
             }
           } else {
-            Swal.fire('Đặt hàng thất bại', '', 'error')
+            const errorData = await response.json()
+            Swal.fire('Đặt hàng thất bại', errorData.message || '', 'error')
           }
           break
 

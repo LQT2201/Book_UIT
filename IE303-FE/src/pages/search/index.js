@@ -37,10 +37,16 @@ const SearchPage = () => {
         if (!response.ok) {
           throw new Error('Failed to fetch genres')
         }
-        const data = await response.json()
-        setGenres(data)
+        const result = await response.json()
+        if (result.success) {
+          setGenres(result.data)
+        } else {
+          console.error('Failed to fetch genres:', result.message)
+          setGenres([])
+        }
       } catch (error) {
         console.error('Error fetching genres:', error)
+        setGenres([])
       }
     }
 
@@ -128,7 +134,7 @@ const SearchPage = () => {
 
   return (
     <Box bgcolor='#F0F0F0'>
-      <Container maxWidth='lg' sx={{ bgcolor: 'transparent' }}>
+      <Container maxWidth='lg' sx={{ bgcolor: 'transparent', marginTop: 30 }}>
         <Grid container spacing={2}>
           <Grid item md={3}>
             <Paper elevation={0} sx={{ bgcolor: 'white', mb: 2 }}>
